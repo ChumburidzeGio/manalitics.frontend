@@ -10,7 +10,9 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import Snackbar from '../components/Snackbar';
 import { connect } from 'react-redux'
-import ImportExportSection from '../pages/ImportExportSection'
+import { removeAccessToken } from '../auth'
+import { browserHistory } from 'react-router'
+import Button from 'material-ui/Button'
 
 const styles = theme => ({
     toolbar: {
@@ -20,7 +22,7 @@ const styles = theme => ({
         flex: 1,
         textDecoration: 'none'
     }
-})
+});
 
 class App extends React.Component {
 
@@ -29,6 +31,7 @@ class App extends React.Component {
         super(props);
 
         this.state = {
+            withHeader: props.withHeader !== undefined ? props.withHeader : true,
             headerText: props.headerText ? props.headerText : () => {},
             backButton: props.backButton,
         }
@@ -36,16 +39,21 @@ class App extends React.Component {
 
     handleBackButton = () => {
         return this.state.headerText ? this.state.backButton() : null
-    }
+    };
+
+    logOut = () => {
+        removeAccessToken()
+        browserHistory.push('/login')
+    };
 
     render() {
 
-        const { classes, snackQueue } = this.props;
+        const { classes, snackQueue, children } = this.props;
 
         return (
-            <div>
+            <div className={classes.root}>
 
-                <AppBar position="static">
+                {this.state.withHeader && <AppBar position="static">
                     <Toolbar className={classes.toolbar}>
                         {this.state.headerText() &&
                             <IconButton color="inherit" aria-label="Go back" onClick={this.handleBackButton}>
@@ -53,14 +61,15 @@ class App extends React.Component {
                         </IconButton>}
 
                         <Typography type="title" color="inherit" className={classes.logo} component={Link} to="/" onClick={this.handleBackButton}>
-                            {this.state.headerText() ? this.state.headerText() : 'Fieldify' }
+                            {this.state.headerText() ? this.state.headerText() : 'Bookify' }
                         </Typography>
 
-                        <ImportExportSection />
-                    </Toolbar>
-                </AppBar>
+                        <Button onClick={this.logOut} color="inherit">Logout</Button>
 
-                {this.props.children}
+                    </Toolbar>
+                </AppBar>}
+
+                {children}
 
                 {snackQueue.map((item) =>
                     <Snackbar message={item.label} key={item.id} id={item.id} duration={item.duration}/>
