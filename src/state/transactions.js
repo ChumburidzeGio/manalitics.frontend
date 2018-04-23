@@ -1,13 +1,13 @@
 import client from '../client';
 
 export const actionTypes = {
-    LOAD_TRANSACTIONS_SUCCESS: 'RRS_LOAD_TRANSACTIONS_SUCCESS',
+  LOAD_TRANSACTIONS_SUCCESS: 'RRS_LOAD_TRANSACTIONS_SUCCESS',
 };
 
 export const initialState = {
-    items: [],
-    itemsOriginal: [],
-    nextPageId: 1
+  items: [],
+  itemsOriginal: [],
+  nextPageId: 1,
 };
 
 /**
@@ -18,13 +18,13 @@ export const initialState = {
  * @returns {Object}
  */
 export function loadTransactions() {
-    return function(dispatch, getState) {
-        return client().get('/transactions?page='+getState().transactionReducer.nextPageId).then(resources => {
-            dispatch(loadTransactionsSuccess(resources))
-        }).catch(error => {
-            throw(error)
-        })
-    }
+  return function (dispatch, getState) {
+    return client().get(`/transactions?page=${getState().transactionReducer.nextPageId}`).then((resources) => {
+      dispatch(loadTransactionsSuccess(resources));
+    }).catch((error) => {
+      throw (error);
+    });
+  };
 }
 
 /**
@@ -35,39 +35,39 @@ export function loadTransactions() {
  * @param {Object} transactions
  * @returns {Object}
  */
-export const loadTransactionsSuccess = (transactions) => {
-    return {
-        type: actionTypes.LOAD_TRANSACTIONS_SUCCESS,
-        payload: transactions,
-    }
-}
+export const loadTransactionsSuccess = transactions => ({
+  type: actionTypes.LOAD_TRANSACTIONS_SUCCESS,
+  payload: transactions,
+});
 
-var groupBy = function(xs, key) {
-    return xs.reduce(function(rv, x) {
-      (rv[x[key]] = rv[x[key]] || []).push(x);
-      return rv;
-    }, {});
+const groupBy = function (xs, key) {
+  return xs.reduce((rv, x) => {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
 };
 
 export default (state = initialState, { type, payload } = {}) => {
-    let items, itemsOriginal, nextPageId;
-    switch (type) {
-        case actionTypes.LOAD_TRANSACTIONS_SUCCESS:
+  let items,
+    itemsOriginal,
+    nextPageId;
+  switch (type) {
+    case actionTypes.LOAD_TRANSACTIONS_SUCCESS:
 
-            itemsOriginal = state.itemsOriginal
+      itemsOriginal = state.itemsOriginal;
 
-            for (let transaction of payload.data.data) {
-                itemsOriginal.push(transaction)
-            }
+      for (const transaction of payload.data.data) {
+        itemsOriginal.push(transaction);
+      }
 
-            const grouped = groupBy(itemsOriginal, 'date');
+      const grouped = groupBy(itemsOriginal, 'date');
 
-            items = Object.keys(grouped).map((key, index) => ({day: key, items: grouped[key]}));
+      items = Object.keys(grouped).map((key, index) => ({ day: key, items: grouped[key] }));
 
-            nextPageId = payload.data.next_page_url ? state.nextPageId + 1 : null;
+      nextPageId = payload.data.next_page_url ? state.nextPageId + 1 : null;
 
-            return { items, itemsOriginal, nextPageId };
-        default:
-            return state;
-    }
-}
+      return { items, itemsOriginal, nextPageId };
+    default:
+      return state;
+  }
+};

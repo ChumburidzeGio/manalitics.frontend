@@ -24,7 +24,6 @@ import Dialog, {
 import XSelect from '../components/XSelect';
 import CloudUpload from 'material-ui-icons/CloudUpload';
 import { loadTransactions } from '../state/transactions';
-import Stats from '../components/Stats';
 import moment from 'moment';
 
 const styles = ({
@@ -104,11 +103,11 @@ class DashboardPage extends React.Component {
         }
     }
 
-    componentDidMount = () => {
+    componentDidMount() {
         this.props.loadTransactions()
     }
 
-    handleTransactionClick = (id) => {
+    handleTransactionClick(id) {
         this.setState({transactionsDrawer: true, drawerLoading: true, drawerData: {}});
 
         client().get('transaction.details?id=' + id).then(({data}) => {
@@ -118,15 +117,15 @@ class DashboardPage extends React.Component {
         });
     };
 
-    handleUploadNew = () => {
+    handleUploadNew() {
         this.setState({isInvModalOpened: !this.state.isInvModalOpened});
     };
 
-    loadMore = () => {
+    loadMore() {
         this.props.loadTransactions(2);
     };
 
-    handleExport = () => {
+    handleExport() {
         this.setState({exportModalOpen: true});
         
         client().get('export.toFileParams').then(({data}) => {
@@ -137,7 +136,7 @@ class DashboardPage extends React.Component {
 
     };
 
-    handleImport = () => {
+    handleImport() {
 
         const formData = new FormData();
 
@@ -169,22 +168,30 @@ class DashboardPage extends React.Component {
 
     };
 
-    handleClose = () => this.setState({isInvModalOpened: false});
+    handleClose() {
+        this.setState({isInvModalOpened: false});
+    } 
 
-    handleCloseExport = () => this.setState({exportModalOpen: !this.state.exportModalOpen});
+    handleCloseExport() {
+        this.setState({exportModalOpen: !this.state.exportModalOpen});
+    }
 
-    handleChangeX = (name, value) => this.setState({[name]: value});
+    handleChangeX(name, value){
+        this.setState({[name]: value});
+    }
 
-    handleChangeFileInput = name => event => this.setState({ [name]: event.target.files[0] });
+    handleChangeFileInput = (name) => event => this.setState({ [name]: event.target.files[0] });
 
-    transformDay = day => moment(day).calendar(null, {
-        sameDay: '[Today]',
-        lastDay: '[Yesterday]',
-        lastWeek: 'DD MMM YYYY',
-        sameElse: 'DD MMM YYYY'
-    });
+    transformDay(day) {
+        return moment(day).calendar(null, {
+            sameDay: '[Today]',
+            lastDay: '[Yesterday]',
+            lastWeek: 'DD MMM YYYY',
+            sameElse: 'DD MMM YYYY'
+        });
+    } 
 
-    toggleDrawer  = (open) => () => {
+    toggleDrawer = open => () => {
         this.setState({
             transactionsDrawer: open,
         });

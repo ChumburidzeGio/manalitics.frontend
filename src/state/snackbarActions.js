@@ -9,12 +9,10 @@ import { actionTypes } from './snackbarReducer';
  * @param {Int} duration
  * @returns {Object}
  */
-export const showSnack = (label, duration, id) => {
-    return {
-        type: actionTypes.SHOW_SNACK,
-        payload: {label, duration, id},
-    };
-}
+export const showSnack = (label, duration, id) => ({
+  type: actionTypes.SHOW_SNACK,
+  payload: { label, duration, id },
+});
 
 /**
  * To remove a snack:
@@ -24,9 +22,7 @@ export const showSnack = (label, duration, id) => {
  * @param {String} label
  * @returns {Object}
  */
-export const hideSnack = (id) => {
-    return {
-        type: actionTypes.HIDE_SNACK,
-        payload: {id},
-    };
-}
+export const hideSnack = id => ({
+  type: actionTypes.HIDE_SNACK,
+  payload: { id },
+});

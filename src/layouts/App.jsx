@@ -37,11 +37,11 @@ class App extends React.Component {
         }
     }
 
-    handleBackButton = () => {
+    handleBackButton() {
         return this.state.headerText ? this.state.backButton() : null
     };
 
-    logOut = () => {
+    logOut() {
         removeAccessToken()
         browserHistory.push('/login')
     };
