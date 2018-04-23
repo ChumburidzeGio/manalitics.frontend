@@ -4,12 +4,14 @@ import { withStyles } from 'material-ui/styles'
 import Paper from 'material-ui/Paper'
 import Button from 'material-ui/Button'
 import App from '../layouts/App'
+import Divider from 'material-ui/Divider'
 import client from '../client'
 import { connect } from 'react-redux'
-import { showSnack } from '../state/snackbarActions'
-import List, { ListItem, ListItemText } from 'material-ui/List'
+import { showSnack, hideSnack } from '../state/snackbarActions'
+import List, { ListItem, ListItemText, ListItemSecondaryAction, ListItemIcon } from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
 import TextField from 'material-ui/TextField'
+import Drawer from 'material-ui/Drawer'
 import Typography from 'material-ui/Typography'
 import HotelIcon from 'material-ui-icons/Hotel'
 import ListSubheader from 'material-ui/List/ListSubheader'
@@ -23,6 +25,7 @@ import XSelect from '../components/XSelect';
 import CloudUpload from 'material-ui-icons/CloudUpload';
 import { loadTransactions } from '../state/transactions';
 import Stats from '../components/Stats';
+import moment from 'moment';
 
 const styles = ({
     search: {
@@ -38,7 +41,7 @@ const styles = ({
         display: 'flex',
         flexWrap: 'wrap',
         maxWidth: '90%',
-        margin: '30px auto 0',
+        margin: '30px auto 30px',
         borderRadius: '3px'
     },
     uploadButton: {
@@ -57,9 +60,17 @@ const styles = ({
         }
     },
     listItem: {
+        borderBottom: '1px solid #33333314',
         '&>h3': {
             fontSize: '14px'
         }
+    },
+    drawerList: {
+        width: 400,
+        maxWidth: '95vw'
+    },
+    drawerDetails: {
+        padding: '10px 20px'
     }
 })
 
@@ -87,20 +98,24 @@ class DashboardPage extends React.Component {
                     value: 'tbcbank',
                 }
             ],
+            bank: null,
             exportModalOpen: false,
             exportLink: null,
         }
     }
 
     componentDidMount = () => {
-        
-        client.get('stats.general').then(({data}) => this.setState({stats: data}));
-
         this.props.loadTransactions()
     }
 
-    handleInventoryClick = () => {
-        this.setState({isInvModalOpened: !this.state.isInvModalOpened});
+    handleTransactionClick = (id) => {
+        this.setState({transactionsDrawer: true, drawerLoading: true, drawerData: {}});
+
+        client().get('transaction.details?id=' + id).then(({data}) => {
+            this.setState({drawerData: data.transaction})
+        }).catch(error => {
+            
+        });
     };
 
     handleUploadNew = () => {
@@ -114,7 +129,7 @@ class DashboardPage extends React.Component {
     handleExport = () => {
         this.setState({exportModalOpen: true});
         
-        client.get('export.toFileParams').then(({data}) => {
+        client().get('export.toFileParams').then(({data}) => {
             this.setState({exportLink: data.link})
         }).catch(error => {
             this.setState({exportModalOpen: false});
@@ -135,9 +150,20 @@ class DashboardPage extends React.Component {
             }
         };
 
-        client.post('import.fromFile', formData, config).then(({data}) => {
-            this.handleClose();
+        this.props.showSnack('Importing transactions...', 100000, 'progress');
+
+        client().post('import.fromFile', formData, config).then(({data}) => {
+            this.props.hideSnack('progress');
+            this.props.showSnack('Succesfully imported all your transactions!');
+            this.props.loadTransactions();
+            this.setState({
+                bank: null,
+                file: '',
+                isInvModalOpened: false
+            });
         }).catch(error => {
+            console.log(error);
+            this.props.hideSnack('progress');
             this.props.showSnack('Something went wrong, please check if you picked correct file and bank');
         });
 
@@ -150,6 +176,19 @@ class DashboardPage extends React.Component {
     handleChangeX = (name, value) => this.setState({[name]: value});
 
     handleChangeFileInput = name => event => this.setState({ [name]: event.target.files[0] });
+
+    transformDay = day => moment(day).calendar(null, {
+        sameDay: '[Today]',
+        lastDay: '[Yesterday]',
+        lastWeek: 'DD MMM YYYY',
+        sameElse: 'DD MMM YYYY'
+    });
+
+    toggleDrawer  = (open) => () => {
+        this.setState({
+            transactionsDrawer: open,
+        });
+    };
 
     search = (event) => {
 
@@ -178,7 +217,7 @@ class DashboardPage extends React.Component {
 
         }).join(' ');
         
-        client.post('/search', params).then(({data}) => {
+        client().post('/search', params).then(({data}) => {
             this.setState({ searchResults: data.transactions || [] });
         }).catch(error => {
             throw(error)
@@ -219,9 +258,6 @@ class DashboardPage extends React.Component {
                     </Button>
                 </Paper>
 
-                {(this.state.stats && !this.state.searchQuery) && <Paper className={classes.container} elevation={1}>
-                    <Stats data={this.state.stats}/>
-                </Paper>}
                 
                 <Paper className={classes.container} elevation={1}>
                     
@@ -254,18 +290,30 @@ class DashboardPage extends React.Component {
                             <ListSubheader component="div" disableSticky={true}>My transactions</ListSubheader>
                         }>
 
-                        {transactions.items && transactions.items.map(item => {
-                                return (
-                                    <ListItem onClick={this.handleInventoryClick} button key={item.id}>
-                                        <Avatar>
-                                            <HotelIcon />
-                                        </Avatar>
-                                        <ListItemText
-                                            primary={item.title}
-                                            secondary={(item.is_expense ? '-' : '') + item.amount + ' ' + item.currency + ' · ' + item.date + ' · ' + item.description}
-                                            className={classes.listItem}/>
-                                    </ListItem>
-                                )
+                        {transactions.items && transactions.items.map(group => {
+                            return (
+                                <div key={group.day}>
+                                    <ListSubheader disableSticky={true} style={{color: '#3b5998'}}>
+                                        {this.transformDay(group.day)}
+                                    </ListSubheader>
+                                    {group.items.map(item => {
+                                        return (
+                                            <ListItem onClick={this.handleTransactionClick.bind(this, item.id)} button key={item.id}>
+                                                {/* <Avatar>
+                                                    <HotelIcon />
+                                                </Avatar> */}
+                                                <ListItemText
+                                                    primary={item.title}
+                                                    className={classes.listItem}/>
+                                                    <ListItemText
+                                                        primary={(item.is_expense ? '-' : '') + item.amount + ' ' + item.currency}
+                                                        className={classes.listItem}
+                                                        style={{textAlign: 'right'}}/>
+                                            </ListItem>
+                                        )
+                                    })}
+                                </div>
+                            );
                         })}
 
                         <Button component="span" fullWidth color="primary" onClick={this.loadMore}>
@@ -276,7 +324,6 @@ class DashboardPage extends React.Component {
                     </List>}
 
                 </Paper>
-
 
                         <Dialog
                             open={this.state.isInvModalOpened}
@@ -319,7 +366,7 @@ class DashboardPage extends React.Component {
                                 <Button onClick={this.handleClose}>
                                     Cancel
                                 </Button>
-                                <Button onClick={this.handleUpload} color="primary" autoFocus>
+                                <Button onClick={this.handleImport} color="primary" autoFocus>
                                     Upload
                                 </Button>
                             </DialogActions>
@@ -350,7 +397,45 @@ class DashboardPage extends React.Component {
                                 </Button>
                             </DialogActions>
                         </Dialog>
+                        
 
+                        <Drawer open={this.state.transactionsDrawer} onClose={this.toggleDrawer(false)}>
+                            <div
+                                tabIndex={0}
+                                role="button"
+                                onClick={this.toggleDrawer(false)}
+                                onKeyDown={this.toggleDrawer(false)}
+                                className={classes.drawerList}
+                            >
+                                {this.state.drawerData && <List>
+                                    <ListItem>
+                                        <Avatar className={classes.avatar}>H</Avatar>
+                                        <ListItemText primary={this.state.drawerData.title} secondary={this.state.drawerData.bank} />
+                                    </ListItem>
+                                    
+                                    <div className={classes.drawerDetails}>
+
+                                        <Typography gutterBottom>
+                                            <strong>Transaction:</strong> {this.state.drawerData.is_expense && '-'}{this.state.drawerData.amount} {this.state.drawerData.currency}
+                                        </Typography>
+
+                                        <Typography gutterBottom>
+                                            <strong>Date:</strong> {this.state.drawerData.date}
+                                        </Typography>
+
+                                        <Typography gutterBottom>
+                                            <strong>Type:</strong> {this.state.drawerData.type}
+                                        </Typography>
+
+                                        <Typography gutterBottom>
+                                            <strong>Description:</strong> {this.state.drawerData.description}
+                                        </Typography>
+
+                                    </div>
+
+                                </List>}
+                            </div>
+                        </Drawer>
 
             </App>
         );
@@ -362,5 +447,5 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 export default withStyles(styles)(withRoot(
-    connect(mapStateToProps, {showSnack, loadTransactions})(DashboardPage)
+    connect(mapStateToProps, {showSnack, hideSnack, loadTransactions})(DashboardPage)
 ))

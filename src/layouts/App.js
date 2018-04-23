@@ -61,7 +61,7 @@ class App extends React.Component {
                         </IconButton>}
 
                         <Typography type="title" color="inherit" className={classes.logo} component={Link} to="/" onClick={this.handleBackButton}>
-                            {this.state.headerText() ? this.state.headerText() : 'Bookify' }
+                            {this.state.headerText() ? this.state.headerText() : 'Manalitics' }
                         </Typography>
 
                         <Button onClick={this.logOut} color="inherit">Logout</Button>

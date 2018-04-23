@@ -50,39 +50,42 @@ const styles = ({
 
 class LoginPage extends React.Component {
 
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            email: '',
-            password: '',
-        }
-    }
+    state = {
+        email: '',
+        password: '',
+    };
 
     handleChange = name => event => {
         this.setState({
-            [name]: event.target.value,
-        })
+            [name]: event.target.value
+        });
     }
 
     handleSubmit = (e) =>
     {
-        e.preventDefault()
+        e.preventDefault();
 
-        client.post('auth/login', this.state).then(({data}) =>
-        {
-            setAccessToken(data.data.token, data.data.expiresIn)
-            this.props.showSnack('თქვენ წარმატებით გაიარეთ ავტორიზაცია')
-            setTimeout(() => browserHistory.push('/'), 100)
+        client().post('auth/login', this.state).then(({data}) => {
+            setAccessToken(data.data.token, data.data.expiresIn);
+            this.props.showSnack(data.message);
 
-        }).catch((error) => {
-            this.props.showSnack('დაფიქსრიდა შეცდომა')
+            const access_token = localStorage.getItem('access_token');
+            
+            if(access_token === data.data.token) {
+                browserHistory.push('/');
+            }
         })
+        .catch((error) => {
+            if(error.response.data.message) {
+                return this.props.showSnack(error.response.data.message);
+            }
+            this.props.showSnack('Something went wrong');
+        });
     }
 
     render() {
 
-        const { classes } = this.props
+        const { classes } = this.props;
 
         return (
             <App withHeader={false}>
@@ -90,7 +93,7 @@ class LoginPage extends React.Component {
                 <Paper className={classes.container} elevation={4}>
 
                     <Typography variant="headline" component="h3" className={classes.header}>
-                        Sign in your Manalitics
+                        Sign in to your Manalitics
                     </Typography>
 
                     <form autoComplete="off" className={classes.form} onSubmit={this.handleSubmit}>
@@ -129,4 +132,4 @@ class LoginPage extends React.Component {
 
 export default withStyles(styles)(withRoot(
     connect(null, {showSnack})(LoginPage)
-))
+));

@@ -43,7 +43,7 @@ class Stats extends React.Component {
         const { classes } = this.props;
 
         return (
-            <React.Fragment className={classes.root}>
+            <div className={classes.root}>
             <Table className={classes.table}>
                 <TableHead>
                 <TableRow>
@@ -66,7 +66,7 @@ class Stats extends React.Component {
                 })}
                 </TableBody>
             </Table>
-            </React.Fragment>
+            </div>
         );
     }
 }
