@@ -1,12 +1,11 @@
 import React from 'react'
-import withRoot from '../withRoot'
-import { withStyles } from 'material-ui/styles'
+import withRoot from '../../withRoot'
 import Paper from 'material-ui/Paper'
 import Button from 'material-ui/Button'
-import App from '../layouts/App'
-import client from '../client'
+import App from '../../layouts/App'
+import client from '../../client'
 import { connect } from 'react-redux'
-import { showSnack, hideSnack } from '../state/snackbarActions'
+import { showSnack, hideSnack } from '../../state/snackbarActions'
 import List, { ListItem, ListItemText } from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
 import TextField from 'material-ui/TextField'
@@ -20,59 +19,14 @@ import Dialog, {
     DialogContentText,
     DialogTitle,
 } from 'material-ui/Dialog'
-import XSelect from '../components/XSelect';
+import XSelect from '../../components/XSelect';
 import CloudUpload from 'material-ui-icons/CloudUpload';
-import { loadTransactions } from '../state/transactions';
+import { loadTransactions } from '../../state/transactions';
 import moment from 'moment';
+import { log } from '../../helpers';
+import styles from './Dashboard.css';
 
-const styles = ({
-    search: {
-        '&:before': {
-            backgroundColor: 'rgba(0, 0, 0, 0.2)'
-        }
-    },
-    searchInput: {
-        padding: '15px'
-    },
-
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        maxWidth: '90%',
-        margin: '30px auto 30px',
-        borderRadius: '3px'
-    },
-    uploadButton: {
-        marginTop: '25px',
-        border: '1px solid #2196f3',
-    },
-    uploadButtonIcon: {
-      marginRight: '10px'
-    },
-    hiddenInput: {
-        display: 'none',
-    },
-    modal: {
-        '&>div': {
-            overflow: 'visible'
-        }
-    },
-    listItem: {
-        borderBottom: '1px solid #33333314',
-        '&>h3': {
-            fontSize: '14px'
-        }
-    },
-    drawerList: {
-        width: 400,
-        maxWidth: '95vw'
-    },
-    drawerDetails: {
-        padding: '10px 20px'
-    }
-})
-
-class DashboardPage extends React.Component {
+class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
@@ -228,7 +182,7 @@ class DashboardPage extends React.Component {
 
     render() {
 
-        const { classes, transactions } = this.props
+        const { transactions } = this.props
 
         return (
             <App>
@@ -238,9 +192,9 @@ class DashboardPage extends React.Component {
                     placeholder="Search for resources and product types"
                     type="search"
                     InputProps={{
-                        classes: {
-                            root: classes.search,
-                            input: classes.searchInput
+                        styles: {
+                            root: styles.search,
+                            input: styles.searchInput
                         },
                     }}
                     autoFocus
@@ -249,7 +203,7 @@ class DashboardPage extends React.Component {
                     fullWidth
                 />
 
-                <Paper className={classes.container} elevation={1}>
+                <Paper className={styles.container} elevation={1}>
                     <Button onClick={this.handleUploadNew} color="primary">
                         Import transactions
                     </Button>
@@ -259,7 +213,7 @@ class DashboardPage extends React.Component {
                 </Paper>
 
                 
-                <Paper className={classes.container} elevation={1}>
+                <Paper className={styles.container} elevation={1}>
                     
                     {this.state.searchQuery ? 
                     <List
@@ -277,7 +231,7 @@ class DashboardPage extends React.Component {
                                         <ListItemText
                                             primary={item.title}
                                             secondary={(item.is_expense ? '-' : '') + item.amount + ' ' + item.currency + ' · ' + item.date + ' · ' + item.description}
-                                            className={classes.listItem}/>
+                                            className={styles.listItem}/>
                                     </ListItem>
                                 )
                         })}
@@ -304,10 +258,10 @@ class DashboardPage extends React.Component {
                                                 </Avatar> */}
                                                 <ListItemText
                                                     primary={item.title}
-                                                    className={classes.listItem}/>
+                                                    className={styles.listItem}/>
                                                     <ListItemText
                                                         primary={(item.is_expense ? '-' : '') + item.amount + ' ' + item.currency}
-                                                        className={classes.listItem}
+                                                        className={styles.listItem}
                                                         style={{textAlign: 'right'}}/>
                                             </ListItem>
                                         )
@@ -328,7 +282,7 @@ class DashboardPage extends React.Component {
                         <Dialog
                             open={this.state.isInvModalOpened}
                             onClose={this.handleClose}
-                            className={classes.modal}
+                            className={styles.modal}
                         >
                             <DialogTitle id="alert-dialog-title">Upload File With Transactions</DialogTitle>
 
@@ -343,17 +297,17 @@ class DashboardPage extends React.Component {
                                     <div>
                                         <input
                                             accept=".csv, .xlsx"
-                                            className={classes.hiddenInput}
+                                            className={styles.hiddenInput}
                                             onChange={this.handleChangeFileInput('file')}
                                             id="raised-button-file"
                                             multiple
                                             type="file"
                                         />
                                         <label htmlFor="raised-button-file">
-                                            <Button component="span" className={classes.uploadButton} fullWidth color="primary">
+                                            <Button component="span" className={styles.uploadButton} fullWidth color="primary">
                                                 {!this.state.file ?
                                                     <React.Fragment>
-                                                        <CloudUpload className={classes.uploadButtonIcon}/> Pick the file
+                                                        <CloudUpload className={styles.uploadButtonIcon}/> Pick the file
                                                     </React.Fragment>
                                                  : this.state.file.name}
                                             </Button>
@@ -405,15 +359,15 @@ class DashboardPage extends React.Component {
                                 role="button"
                                 onClick={this.toggleDrawer(false)}
                                 onKeyDown={this.toggleDrawer(false)}
-                                className={classes.drawerList}
+                                className={styles.drawerList}
                             >
                                 {this.state.drawerData && <List>
                                     <ListItem>
-                                        <Avatar className={classes.avatar}>H</Avatar>
+                                        <Avatar className={styles.avatar}>H</Avatar>
                                         <ListItemText primary={this.state.drawerData.title} secondary={this.state.drawerData.bank} />
                                     </ListItem>
                                     
-                                    <div className={classes.drawerDetails}>
+                                    <div className={styles.drawerDetails}>
 
                                         <Typography gutterBottom>
                                             <strong>Transaction:</strong> {this.state.drawerData.is_expense && '-'}{this.state.drawerData.amount} {this.state.drawerData.currency}
@@ -446,6 +400,6 @@ const mapStateToProps = (state, ownProps) => ({
     transactions: state.transactionReducer
 });
 
-export default withStyles(styles)(withRoot(
-    connect(mapStateToProps, {showSnack, hideSnack, loadTransactions})(DashboardPage)
-))
+export default withRoot(
+    connect(mapStateToProps, {showSnack, hideSnack, loadTransactions})(Dashboard)
+);

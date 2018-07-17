@@ -1,4 +1,4 @@
-import client from '../client';
+import * as transactionApi from '../api/transactionApi';
 
 export const actionTypes = {
   LOAD_TRANSACTIONS_SUCCESS: 'RRS_LOAD_TRANSACTIONS_SUCCESS',
@@ -19,7 +19,9 @@ export const initialState = {
  */
 export function loadTransactions() {
   return function (dispatch, getState) {
-    return client().get(`/transactions?page=${getState().transactionReducer.nextPageId}`).then((resources) => {
+    return transactionApi.load({
+        page: getState().transactionReducer.nextPageId
+      }).then((resources) => {
       dispatch(loadTransactionsSuccess(resources));
     }).catch((error) => {
       throw (error);

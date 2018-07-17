@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router';
-import DashboardPage from './pages/DashboardPage';
+import Dashboard from './pages/Dashboard/Dashboard';
 import LoginPage from './pages/LoginPage';
 import { sessionService } from 'redux-react-session';
 
@@ -17,7 +17,7 @@ const requireGuest = (nextState, replace, next) => {
 }
 
 const authRoutes = [
-    <Route path="/" component={DashboardPage} onEnter={sessionService.checkAuth} />,
+    <Route path="/" component={Dashboard} onEnter={sessionService.checkAuth} />,
     <Route path="/login" component={LoginPage} onEnter={requireGuest} />
 ];
 

@@ -1,0 +1,52 @@
+.search {
+    &:before {
+        background-color: rgba(0, 0, 0, 0.2)
+    }
+};
+
+.searchInput {
+    padding: 15px
+};
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 90%;
+    margin: 30px auto 30px;
+    border-radius: 3px;
+};
+
+.uploadButton {
+    margin-top: 25px;
+    border: 1px solid #2196f3;
+};
+
+.uploadButtonIcon {
+  margin-right: 10px;
+};
+
+.hiddenInput {
+    display: none,
+};
+
+.modal {
+    &>div {
+        overflow: visible
+    }
+};
+
+.listItem {
+    border-bottom: 1px solid #33333314;
+    &>h3 {
+        font-size: 14px
+    }
+};
+
+.drawerList {
+    width: 400;
+    max-width: 95vw;
+};
+
+.drawerDetails {
+    padding: 10px 20px;
+};
