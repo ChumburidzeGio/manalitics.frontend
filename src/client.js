@@ -5,7 +5,7 @@ export default function client() {
   const header = token ? `Bearer ${token}` : false;
 
   return axios.create({
-    baseURL: 'http://localhost:90/api/',
+    baseURL: process.env.API_BASE_URL,
     headers: {
       'Content-Type': 'application/json',
       Authorization: header,

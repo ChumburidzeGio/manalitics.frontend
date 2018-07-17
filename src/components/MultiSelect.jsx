@@ -43,27 +43,27 @@ class MultiSelect extends React.Component {
           input={<Input id={this.state.id} />}
           margin="normal"
           MenuProps={{
-                        PaperProps: {
-                            style: {
-                                width: 200,
-                            },
-                        },
-                    }}
+            PaperProps: {
+              style: {
+                width: 200,
+              },
+            },
+          }}
         >
           {this.state.options.map(item => (
             <MenuItem
               key={item.id}
               value={item.id}
               style={{
-                                fontWeight:
-                                    this.state.options.indexOf(item.id) === -1
-                                        ? theme.typography.fontWeightRegular
-                                        : theme.typography.fontWeightMedium,
-                            }}
+                fontWeight:
+                  this.state.options.indexOf(item.id) === -1
+                    ? theme.typography.fontWeightRegular
+                    : theme.typography.fontWeightMedium,
+              }}
             >
               {item.label}
             </MenuItem>
-                    ))}
+          ))}
         </Select>}
 
       </FormControl>

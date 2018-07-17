@@ -1,7 +1,0 @@
-{
-    "extends": "airbnb",
-    "globals": {
-        "localStorage": true,
-        "document": true
-    }
-}

@@ -4,11 +4,10 @@ import { withStyles } from 'material-ui/styles'
 import Paper from 'material-ui/Paper'
 import Button from 'material-ui/Button'
 import App from '../layouts/App'
-import Divider from 'material-ui/Divider'
 import client from '../client'
 import { connect } from 'react-redux'
 import { showSnack, hideSnack } from '../state/snackbarActions'
-import List, { ListItem, ListItemText, ListItemSecondaryAction, ListItemIcon } from 'material-ui/List'
+import List, { ListItem, ListItemText } from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
 import TextField from 'material-ui/TextField'
 import Drawer from 'material-ui/Drawer'
@@ -103,11 +102,11 @@ class DashboardPage extends React.Component {
         }
     }
 
-    componentDidMount() {
+    componentDidMount = () => {
         this.props.loadTransactions()
     }
 
-    handleTransactionClick(id) {
+    handleTransactionClick = (id) => {
         this.setState({transactionsDrawer: true, drawerLoading: true, drawerData: {}});
 
         client().get('transaction.details?id=' + id).then(({data}) => {
@@ -117,26 +116,20 @@ class DashboardPage extends React.Component {
         });
     };
 
-    handleUploadNew() {
+    handleUploadNew = () => {
         this.setState({isInvModalOpened: !this.state.isInvModalOpened});
     };
 
-    loadMore() {
+    loadMore = () => {
         this.props.loadTransactions(2);
     };
 
-    handleExport() {
+    handleExport = () => {
         this.setState({exportModalOpen: true});
-        
-        client().get('export.toFileParams').then(({data}) => {
-            this.setState({exportLink: data.link})
-        }).catch(error => {
-            this.setState({exportModalOpen: false});
-        });
-
+        this.setState({exportLink: '/export.toFile?token='})
     };
 
-    handleImport() {
+    handleImport = () => {
 
         const formData = new FormData();
 
@@ -168,15 +161,15 @@ class DashboardPage extends React.Component {
 
     };
 
-    handleClose() {
+    handleClose = () => {
         this.setState({isInvModalOpened: false});
     } 
 
-    handleCloseExport() {
+    handleCloseExport = () => {
         this.setState({exportModalOpen: !this.state.exportModalOpen});
     }
 
-    handleChangeX(name, value){
+    handleChangeX = (name, value) => {
         this.setState({[name]: value});
     }
 
@@ -191,7 +184,7 @@ class DashboardPage extends React.Component {
         });
     } 
 
-    toggleDrawer = open => () => {
+    toggleDrawer = (open) => () => {
         this.setState({
             transactionsDrawer: open,
         });

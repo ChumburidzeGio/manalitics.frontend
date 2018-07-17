@@ -27,7 +27,7 @@ class SnackbarComponent extends React.Component {
     }
   }
 
-  handleClose(event, reason) {
+  handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -61,9 +61,7 @@ class SnackbarComponent extends React.Component {
             color="inherit"
             onClick={this.handleClose}
             dense
-          >
-            Hide
-                        </Button>,
+          >Hide</Button>,
         ]}
       />
     );

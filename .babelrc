@@ -1,0 +1,13 @@
+{
+    "presets" : [
+      "env",
+      "react"
+    ],
+    "plugins" : [
+      "relay",
+      "react-hot-loader/babel",
+      "transform-object-rest-spread",
+      "transform-es2015-parameters",
+      "transform-class-properties"
+    ]
+  }

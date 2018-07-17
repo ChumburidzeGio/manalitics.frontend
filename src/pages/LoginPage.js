@@ -6,11 +6,10 @@ import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
 import Button from 'material-ui/Button'
 import App from '../layouts/App'
-import client from '../client'
-import { connect } from 'react-redux'
-import { showSnack } from '../state/snackbarActions'
-import { setAccessToken } from '../auth'
-import { browserHistory } from 'react-router'
+import { connect } from 'react-redux';
+import { showSnack } from '../state/snackbarActions';
+import { browserHistory } from 'react-router';
+import { login } from '../state/sessions';
 
 const styles = ({
     container: {
@@ -61,25 +60,10 @@ class LoginPage extends React.Component {
         });
     }
 
-    handleSubmit = (e) =>
-    {
+    handleSubmit = (e) => {
         e.preventDefault();
-
-        client().post('auth/login', this.state).then(({data}) => {
-            setAccessToken(data.data.token, data.data.expiresIn);
-            this.props.showSnack(data.message);
-
-            const access_token = localStorage.getItem('access_token');
-            
-            if(access_token === data.data.token) {
-                browserHistory.push('/');
-            }
-        })
-        .catch((error) => {
-            if(error.response.data.message) {
-                return this.props.showSnack(error.response.data.message);
-            }
-            this.props.showSnack('Something went wrong');
+        this.props.login(this.state, browserHistory, {
+            error: 'Email or password is not correct!'
         });
     }
 
@@ -93,7 +77,7 @@ class LoginPage extends React.Component {
                 <Paper className={classes.container} elevation={4}>
 
                     <Typography variant="headline" component="h3" className={classes.header}>
-                        Sign in to your Manalitics
+                        Welcome to Kamo
                     </Typography>
 
                     <form autoComplete="off" className={classes.form} onSubmit={this.handleSubmit}>
@@ -121,15 +105,14 @@ class LoginPage extends React.Component {
                     </form>
                 </Paper>
 
-                <Typography className={classes.credits}>
-                    Manalitics by <a href="https://nixler.ge" target="_blank">Nixler</a>
-                </Typography>
-
+                {/* <Typography className={classes.credits}>
+                    <a href="/">Sign Up</a>
+                </Typography> */}
             </App>
         );
     }
 }
 
 export default withStyles(styles)(withRoot(
-    connect(null, {showSnack})(LoginPage)
+    connect(null, {showSnack, login})(LoginPage)
 ));
