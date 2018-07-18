@@ -16,7 +16,7 @@ export default (state = initialState, { type, payload } = {}) => {
       queue.push({
         label: payload.label,
         duration: payload.duration,
-        id: payload.id || initialState.lastItemId++,
+        id: payload.id || (initialState.lastItemId + 1),
       });
       return { queue };
     case actionTypes.HIDE_SNACK:

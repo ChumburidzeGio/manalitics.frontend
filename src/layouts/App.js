@@ -1,5 +1,4 @@
 import React from 'react';
-import withRoot from '../withRoot';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import Toolbar from 'material-ui/Toolbar';
@@ -8,21 +7,13 @@ import ArrowBackIcon from 'material-ui-icons/ArrowBack';
 import { withStyles } from 'material-ui/styles';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import Snackbar from '../components/Snackbar';
 import { connect } from 'react-redux'
-import { removeAccessToken } from '../auth'
 import { browserHistory } from 'react-router'
 import Button from 'material-ui/Button'
-
-const styles = theme => ({
-    toolbar: {
-        position: 'relative'
-    },
-    logo: {
-        flex: 1,
-        textDecoration: 'none'
-    }
-});
+import withRoot from '../withRoot';
+import Snackbar from '../components/Snackbar';
+import { removeAccessToken } from '../auth'
+import styles from './App.css';
 
 class App extends React.Component {
 
@@ -48,19 +39,19 @@ class App extends React.Component {
 
     render() {
 
-        const { classes, snackQueue, children } = this.props;
+        const { snackQueue, children } = this.props;
 
         return (
-            <div className={classes.root}>
+            <div className={styles.root}>
 
                 {this.state.withHeader && <AppBar position="static">
-                    <Toolbar className={classes.toolbar}>
+                    <Toolbar className={styles.toolbar}>
                         {this.state.headerText() &&
                             <IconButton color="inherit" aria-label="Go back" onClick={this.handleBackButton}>
                                 <ArrowBackIcon />
                         </IconButton>}
 
-                        <Typography type="title" color="inherit" className={classes.logo} component={Link} to="/" onClick={this.handleBackButton}>
+                        <Typography type="title" color="inherit" className={styles.logo} component={Link} to="/" onClick={this.handleBackButton}>
                             {this.state.headerText() ? this.state.headerText() : 'Kamo' }
                         </Typography>
 
@@ -81,11 +72,13 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-    classes: PropTypes.object.isRequired,
-}
+    withHeader: PropTypes.bool,
+    headerText: PropTypes.string,
+    backButton: PropTypes.bool,
+};
 
 const mapStateToProps = (state, ownProps) => ({
     snackQueue: state.snackbarReducer.queue,
-})
+});
 
-export default withRoot(withStyles(styles)(connect(mapStateToProps)(App)))
+export default withRoot(connect(mapStateToProps)(App));

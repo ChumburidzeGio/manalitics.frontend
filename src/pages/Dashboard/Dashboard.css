@@ -1,8 +1,7 @@
-.search:before {
-  background-color: rgba(0, 0, 0, 0.2); }
-
 .searchInput {
-  padding: 15px; }
+  padding: 15px !important; }
+  .searchInput:before {
+    background-color: rgba(0, 0, 0, 0.2) !important; }
 
 .container {
   display: flex;
@@ -30,7 +29,7 @@
     font-size: 14px; }
 
 .drawerList {
-  width: 400;
+  width: 400px;
   max-width: 95vw; }
 
 .drawerDetails {

@@ -1,11 +1,8 @@
-.search {
-    &:before {
-        background-color: rgba(0, 0, 0, 0.2)
-    }
-};
-
 .searchInput {
-    padding: 15px
+    padding: 15px!important;
+    &:before {
+        background-color: rgba(0, 0, 0, 0.2)!important;
+    }
 };
 
 .container {
@@ -26,24 +23,24 @@
 };
 
 .hiddenInput {
-    display: none,
+    display: none;
 };
 
 .modal {
     &>div {
-        overflow: visible
+        overflow: visible;
     }
 };
 
 .listItem {
     border-bottom: 1px solid #33333314;
     &>h3 {
-        font-size: 14px
+        font-size: 14px;
     }
 };
 
 .drawerList {
-    width: 400;
+    width: 400px;
     max-width: 95vw;
 };
 

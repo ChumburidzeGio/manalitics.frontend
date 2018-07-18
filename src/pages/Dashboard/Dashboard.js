@@ -1,33 +1,33 @@
-import React from 'react'
-import withRoot from '../../withRoot'
-import Paper from 'material-ui/Paper'
-import Button from 'material-ui/Button'
-import App from '../../layouts/App'
-import client from '../../client'
-import { connect } from 'react-redux'
-import { showSnack, hideSnack } from '../../state/snackbarActions'
-import List, { ListItem, ListItemText } from 'material-ui/List'
-import Avatar from 'material-ui/Avatar'
-import TextField from 'material-ui/TextField'
-import Drawer from 'material-ui/Drawer'
-import Typography from 'material-ui/Typography'
-import HotelIcon from 'material-ui-icons/Hotel'
-import ListSubheader from 'material-ui/List/ListSubheader'
+import React from 'react';
+import Paper from 'material-ui/Paper';
+import Button from 'material-ui/Button';
+import { connect } from 'react-redux';
+import { showSnack, hideSnack } from '../../state/snackbarActions';
+import List, { ListItem, ListItemText } from 'material-ui/List';
+import Avatar from 'material-ui/Avatar';
+import TextField from 'material-ui/TextField';
+import Drawer from 'material-ui/Drawer';
+import Typography from 'material-ui/Typography';
+import HotelIcon from 'material-ui-icons/Hotel';
+import ListSubheader from 'material-ui/List/ListSubheader';
 import Dialog, {
     DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
-} from 'material-ui/Dialog'
-import XSelect from '../../components/XSelect';
-import CloudUpload from 'material-ui-icons/CloudUpload';
-import { loadTransactions } from '../../state/transactions';
+} from 'material-ui/Dialog';
 import moment from 'moment';
-import { log } from '../../helpers';
+import CloudUpload from 'material-ui-icons/CloudUpload';
+import Input from 'material-ui/Input';
+import { FormControl } from 'material-ui/Form';
+import XSelect from '../../components/XSelect';
+import { loadTransactions } from '../../state/transactions';
+import withRoot from '../../withRoot';
+import App from '../../layouts/App';
+import client from '../../client';
 import styles from './Dashboard.css';
 
 class Dashboard extends React.Component {
-
     constructor(props) {
         super(props);
 
@@ -53,11 +53,11 @@ class Dashboard extends React.Component {
             bank: null,
             exportModalOpen: false,
             exportLink: null,
-        }
-    }
+        };
+    };
 
     componentDidMount = () => {
-        this.props.loadTransactions()
+        this.props.loadTransactions();
     }
 
     handleTransactionClick = (id) => {
@@ -65,8 +65,6 @@ class Dashboard extends React.Component {
 
         client().get('transaction.details?id=' + id).then(({data}) => {
             this.setState({drawerData: data.transaction})
-        }).catch(error => {
-            
         });
     };
 
@@ -80,7 +78,7 @@ class Dashboard extends React.Component {
 
     handleExport = () => {
         this.setState({exportModalOpen: true});
-        this.setState({exportLink: '/export.toFile?token='})
+        this.setState({exportLink: '/export.toFile?token='});
     };
 
     handleImport = () => {
@@ -187,21 +185,17 @@ class Dashboard extends React.Component {
         return (
             <App>
                 
-                <TextField
-                    id="search"
-                    placeholder="Search for resources and product types"
-                    type="search"
-                    InputProps={{
-                        styles: {
-                            root: styles.search,
-                            input: styles.searchInput
-                        },
-                    }}
-                    autoFocus
-                    onChange={this.search}
-                    value={this.state.searchQuery}
-                    fullWidth
-                />
+                <FormControl fullWidth>
+                    <Input 
+                        id="name-simple" 
+                        type="search"
+                        autoFocus
+                        placeholder="Search for resources and product types"
+                        value={this.state.searchQuery}
+                        onChange={this.search}
+                        className={styles.searchInput}
+                    />
+                </FormControl>
 
                 <Paper className={styles.container} elevation={1}>
                     <Button onClick={this.handleUploadNew} color="primary">
@@ -260,7 +254,7 @@ class Dashboard extends React.Component {
                                                     primary={item.title}
                                                     className={styles.listItem}/>
                                                     <ListItemText
-                                                        primary={(item.is_expense ? '-' : '') + item.amount + ' ' + item.currency}
+                                                        primary={item.amount + ' ' + item.currency}
                                                         className={styles.listItem}
                                                         style={{textAlign: 'right'}}/>
                                             </ListItem>
@@ -270,9 +264,9 @@ class Dashboard extends React.Component {
                             );
                         })}
 
-                        <Button component="span" fullWidth color="primary" onClick={this.loadMore}>
+                        {transactions.nextPageId && <Button component="span" fullWidth color="primary" onClick={this.loadMore}>
                             Load more
-                        </Button>
+                        </Button>}
 
 
                     </List>}
@@ -325,7 +319,6 @@ class Dashboard extends React.Component {
                                 </Button>
                             </DialogActions>
                         </Dialog>
-
 
 
                         <Dialog

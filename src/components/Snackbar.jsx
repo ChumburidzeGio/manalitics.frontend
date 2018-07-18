@@ -1,11 +1,11 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { withStyles } from 'material-ui/styles'
-import SnackbarContent from 'material-ui/Snackbar'
-import Button from 'material-ui/Button'
-import { connect } from 'react-redux'
-import { CircularProgress } from 'material-ui/Progress'
-import { hideSnack } from '../state/snackbarActions'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
+import SnackbarContent from 'material-ui/Snackbar';
+import Button from 'material-ui/Button';
+import { connect } from 'react-redux';
+import { CircularProgress } from 'material-ui/Progress';
+import { hideSnack } from '../state/snackbarActions';
 
 const styles = theme => ({
   progress: {
@@ -16,7 +16,6 @@ const styles = theme => ({
 });
 
 class SnackbarComponent extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -24,7 +23,7 @@ class SnackbarComponent extends React.Component {
       message: props.message,
       duration: props.duration || 3000,
       id: props.id,
-    }
+    };
   }
 
   handleClose = (event, reason) => {
@@ -32,7 +31,7 @@ class SnackbarComponent extends React.Component {
       return;
     }
 
-    this.props.hideSnack(this.state.id)
+    this.props.hideSnack(this.state.id);
   }
 
   render() {
@@ -45,7 +44,7 @@ class SnackbarComponent extends React.Component {
         }}
         autoHideDuration={this.state.duration}
         onClose={this.handleClose}
-        open={true}
+        open
         SnackbarContentProps={{
           'aria-describedby': 'message-id',
         }}
@@ -61,7 +60,9 @@ class SnackbarComponent extends React.Component {
             color="inherit"
             onClick={this.handleClose}
             dense
-          >Hide</Button>,
+          >
+            Hide
+          </Button>,
         ]}
       />
     );
@@ -70,6 +71,10 @@ class SnackbarComponent extends React.Component {
 
 SnackbarComponent.propTypes = {
   classes: PropTypes.object.isRequired,
+  message: PropTypes.string.isRequired,
+  duration: PropTypes.number.isRequired,
+  id: PropTypes.number.isRequired,
+  hideSnack: PropTypes.func.isRequired,
 }
 
 export default withStyles(styles)(connect(null, { hideSnack })(SnackbarComponent))
