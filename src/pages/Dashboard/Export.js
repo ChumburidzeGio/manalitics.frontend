@@ -8,6 +8,7 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import { sessionService } from 'redux-react-session';
 import { api_url } from '../../helpers';
+import { ListItem, ListItemText } from 'material-ui/List';
 
 const initialState = {
   modalOpen: false,
@@ -31,9 +32,10 @@ class Export extends React.Component {
 
     return (
       <Fragment>
-        <Button onClick={this.modalToggle} color="primary">
-          Export transactions
-        </Button>
+
+        <ListItem button onClick={this.modalToggle}>
+          <ListItemText primary="Export transactions" secondary="Export all your transactions into PDF/Excel/CSV" />
+        </ListItem>
 
         {this.state.modalOpen && (<Dialog
           open={this.state.modalOpen}

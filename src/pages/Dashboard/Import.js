@@ -13,6 +13,7 @@ import XSelect from '../../components/XSelect';
 import styles from './Dashboard.css';
 import { importFromFile } from '../../api/transactionApi';
 import { loadTransactions } from '../../state/transactions';
+import { ListItem, ListItemText } from 'material-ui/List';
 
 const bankOptions = [
   {
@@ -66,9 +67,9 @@ class Import extends React.Component {
 
     return (
       <Fragment>
-        <Button onClick={this.modalToggle} color="primary">
-          Import transactions
-        </Button>
+        <ListItem button onClick={this.modalToggle}>
+          <ListItemText primary="Import data" secondary="Import from CSV/Excel file" />
+        </ListItem>
 
         <Dialog
           open={this.state.modalOpen}

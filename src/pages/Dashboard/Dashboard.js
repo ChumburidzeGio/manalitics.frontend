@@ -1,9 +1,12 @@
 import React from 'react';
 import App from '../../layouts/App';
 import Paper from 'material-ui/Paper';
+import List from 'material-ui/List';
+import Grid from 'material-ui/Grid';
 import styles from './Dashboard.css';
 import Import from './Import';
 import Export from './Export';
+import TransactionList from './TransactionList';
 
 export const Dashboard = () => (
 	<App>
@@ -19,12 +22,22 @@ export const Dashboard = () => (
 				className={styles.searchInput}
 			/>
 		</FormControl> */}
+		<Grid container className={styles.root} spacing={0}>
+			
+			<Grid item lg={8}>
+				<TransactionList />
+			</Grid>
 
-		<Paper className={styles.container} elevation={1}>
-			<Import />
-			<Export />
-		</Paper>
+			<Grid item lg={4}>
+				<Paper className={styles.container} elevation={1}>
+					<List component="nav">
+						<Import />
+						<Export />
+					</List>
+				</Paper>
+			</Grid>
 
+		</Grid>
 	</App>
 );
 

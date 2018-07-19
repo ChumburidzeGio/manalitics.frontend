@@ -37,7 +37,7 @@ class TransactionList extends React.Component {
   };
 
   loadMore = () => {
-    this.props.loadTransactions(2);
+    this.props.loadTransactions();
   };
 
   handleChangeX = (name, value) => {
@@ -126,11 +126,11 @@ class TransactionList extends React.Component {
                   {group.items.map(item => {
                     return (
                       <Transaction
+                        key={item.id}
                         id={item.id}
                         title={item.title}
-                        description={item.date + ' · ' + item.description}
                         amount={item.amount}
-                        onClick={this.handleTransactionClick()}
+                        onClick={this.handleTransactionClick}
                       />
                     )
                   })}
@@ -141,7 +141,6 @@ class TransactionList extends React.Component {
             {transactions.nextPageId && <Button component="span" fullWidth color="primary" onClick={this.loadMore}>
               Load more
             </Button>}
-
 
           </List>}
 

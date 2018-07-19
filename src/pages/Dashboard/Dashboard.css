@@ -1,3 +1,9 @@
+.root {
+  flex-grow: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
 .searchInput {
   padding: 15px !important; }
   .searchInput:before {
@@ -23,10 +29,9 @@
 .modal > div {
   overflow: visible; }
 
-.listItem {
-  border-bottom: 1px solid #33333314; }
-  .listItem > h3 {
-    font-size: 14px; }
+.listItem .listItemRight > h3 {
+  font-size: 14px;
+  font-weight: 500; }
 
 .drawerList {
   width: 400px;
