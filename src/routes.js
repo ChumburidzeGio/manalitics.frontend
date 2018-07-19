@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router';
 import Dashboard from './pages/Dashboard/Dashboard';
-import LoginPage from './pages/LoginPage';
+import Auth from './pages/Auth/Auth';
 import { sessionService } from 'redux-react-session';
 
 const requireGuest = (nextState, replace, next) => {
@@ -18,7 +18,7 @@ const requireGuest = (nextState, replace, next) => {
 
 const authRoutes = [
     <Route path="/" component={Dashboard} onEnter={sessionService.checkAuth} />,
-    <Route path="/login" component={LoginPage} onEnter={requireGuest} />
+    <Route path="/auth" component={Auth} onEnter={requireGuest} />
 ];
 
 export default [...authRoutes].reduce((acc, route, i) => {

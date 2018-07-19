@@ -16,7 +16,7 @@ const store = createStore(
 );
 
 sessionService.initSessionService(store, {
-  redirectPath: '/login',
+  redirectPath: '/auth',
   driver: 'LOCALSTORAGE',
 });
 

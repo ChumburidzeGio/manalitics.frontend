@@ -1,10 +1,5 @@
 import React from 'react';
-import Paper from 'material-ui/Paper';
-import Input from 'material-ui/Input';
-import { FormControl } from 'material-ui/Form';
 import App from '../../layouts/App';
-import styles from './Dashboard.css';
-import Import from './Import';
 
 export const Dashboard = () => (
 	<App>

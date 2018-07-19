@@ -1,0 +1,37 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 500px;
+  margin: 20vh auto 0;
+  padding: 17px 30px 30px;
+  border-radius: 3px;
+}
+
+.header {
+  width: 100%;
+  font-size: 1.35rem;
+  text-align: center;
+  font-weight: 500;
+  color: #212b35;
+  padding-top: 12px;
+  padding-bottom: 3px;
+}
+
+.form {
+  display: block;
+  width: 100%;
+}
+
+.textField {
+  width: 100%;
+}
+
+.button {
+  margin-top: 30px;
+  width: 100%;
+}
+
+.buttonSecondary {
+  margin-top: 10px;
+  width: 100%;
+}

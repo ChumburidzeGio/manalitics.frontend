@@ -4,15 +4,13 @@ import IconButton from 'material-ui/IconButton';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import ArrowBackIcon from 'material-ui-icons/ArrowBack';
-import { withStyles } from 'material-ui/styles';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { connect } from 'react-redux'
-import { browserHistory } from 'react-router'
 import Button from 'material-ui/Button'
 import withRoot from '../withRoot';
 import Snackbar from '../components/Snackbar';
-import { removeAccessToken } from '../auth'
+import { logout } from '../state/sessions';
 import styles from './App.css';
 
 class App extends React.Component {
@@ -32,10 +30,9 @@ class App extends React.Component {
         return this.state.headerText ? this.state.backButton() : null
     };
 
-    logOut() {
-        removeAccessToken()
-        browserHistory.push('/login')
-    };
+    logOut = () => {
+        this.props.logout();
+    }
 
     render() {
 
@@ -75,10 +72,11 @@ App.propTypes = {
     withHeader: PropTypes.bool,
     headerText: PropTypes.string,
     backButton: PropTypes.bool,
+    logout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
     snackQueue: state.snackbarReducer.queue,
 });
 
-export default withRoot(connect(mapStateToProps)(App));
+export default withRoot(connect(mapStateToProps, { logout })(App));
