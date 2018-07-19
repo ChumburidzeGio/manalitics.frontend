@@ -1,4 +1,5 @@
 import client from '../client';
+import { isEnv } from '../helpers';
 
 const fakeAuthSuccessResponse = (user) => ({
   token: '1a2b3c4d',
@@ -10,7 +11,7 @@ const fakeAuthSuccessResponse = (user) => ({
 });
 
 export const login = (user) => {
-  if (process.env.ENV === 'development') {
+  if (isEnv('development')) {
     return client().post('auth/login', user);
   }
 
@@ -22,7 +23,7 @@ export const login = (user) => {
 };
 
 export const signup = (user) => {
-  if (process.env.ENV === 'development') {
+  if (isEnv('development')) {
     return client().post('auth/signup', user);
   }
 

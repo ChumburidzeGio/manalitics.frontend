@@ -1,5 +1,5 @@
 import client from '../client';
-import { getRandomInt } from '../helpers';
+import { getRandomInt, getRandBool, isEnv } from '../helpers';
 
 const generateFakeTransactions = (page, amount) => {
     const from = (page - 1) * amount;
@@ -31,7 +31,7 @@ const generateFakeTransactions = (page, amount) => {
 };
 
 export const load = ({page, query}) => {
-    if(process.env.ENV === 'development') {
+    if(isEnv('development')) {
         return client().get(`/transactions?page=${page}&query=${query}`);
     }
 
@@ -43,7 +43,7 @@ export const load = ({page, query}) => {
 };
 
 export const importFromFile = ({ file, bank }) => {
-    if(process.env.ENV === 'development') {
+    if(isEnv('development')) {
 
         const formData = new FormData();
 
@@ -59,19 +59,19 @@ export const importFromFile = ({ file, bank }) => {
         return client().post('import.fromFile', formData, config);
     }
 
-    if(page < 4) {
-        return new Promise(resolve => setTimeout(resolve(generateFakeTransactions(page, 10)), 1000));
+    if(getRandBool()) {
+        return new Promise(resolve => setTimeout(resolve, 1000));
     }
     
     return new Promise((resolve, reject) => setTimeout(reject, 1000));
 };
 
 export const find = ({ id }) => {
-    if(process.env.ENV === 'development') {
+    if(isEnv('development')) {
         return client().get('transaction.details?id=' + id);
     }
 
-    if(id < 4) {
+    if(getRandBool()) {
         return new Promise(resolve => setTimeout(resolve, 1000));
     }
     

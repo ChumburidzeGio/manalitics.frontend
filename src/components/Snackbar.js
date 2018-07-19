@@ -15,7 +15,7 @@ const styles = theme => ({
   },
 });
 
-class SnackbarComponent extends React.Component {
+class Snackbar extends React.Component {
   constructor(props) {
     super(props);
 
@@ -24,6 +24,8 @@ class SnackbarComponent extends React.Component {
       duration: props.duration || 3000,
       id: props.id,
     };
+
+    console.log(this.state);
   }
 
   handleClose = (event, reason) => {
@@ -69,12 +71,12 @@ class SnackbarComponent extends React.Component {
   }
 }
 
-SnackbarComponent.propTypes = {
+Snackbar.propTypes = {
   classes: PropTypes.object.isRequired,
   message: PropTypes.string.isRequired,
-  duration: PropTypes.number.isRequired,
-  id: PropTypes.number.isRequired,
+  duration: PropTypes.number,
+  id: PropTypes.string.isRequired,
   hideSnack: PropTypes.func.isRequired,
 }
 
-export default withStyles(styles)(connect(null, { hideSnack })(SnackbarComponent))
+export default withStyles(styles)(connect(null, { hideSnack })(Snackbar))

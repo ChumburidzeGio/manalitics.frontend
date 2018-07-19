@@ -6,6 +6,8 @@ import Dialog, {
   DialogContentText,
   DialogTitle,
 } from 'material-ui/Dialog';
+import { sessionService } from 'redux-react-session';
+import { api_url } from '../../helpers';
 
 const initialState = {
   modalOpen: false,
@@ -15,15 +17,15 @@ const initialState = {
 class Export extends React.Component {
   state = initialState;
 
+  componentDidMount = () => {
+    sessionService.loadSession().then(({ token }) => {
+      this.setState({
+        exportLink: api_url('/export.toFile', { token })
+      });
+    });
+  }
+
   modalToggle = () => this.setState({ modalOpen: !this.state.modalOpen });
-
-  handleImport = () => {
-
-    this.setState({ exportLink: '/export.toFile?token=' });
-
-  };
-
-  handleChangeX = (name, value) => this.setState({ [name]: value });
 
   render() {
 
@@ -33,7 +35,7 @@ class Export extends React.Component {
           Export transactions
         </Button>
 
-        <Dialog
+        {this.state.modalOpen && (<Dialog
           open={this.state.modalOpen}
           onClose={this.modalToggle}
         >
@@ -48,14 +50,14 @@ class Export extends React.Component {
           </DialogContent>
 
           <DialogActions>
-            <Button onClick={this.handleCloseExport}>
+            <Button onClick={this.modalToggle}>
               Cancel
             </Button>
             <Button href={this.state.exportLink} target="_blank" color="primary">
               Download
             </Button>
           </DialogActions>
-        </Dialog>
+        </Dialog>)}
       </Fragment>
     );
   }

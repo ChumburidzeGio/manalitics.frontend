@@ -10,9 +10,9 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import CloudUpload from 'material-ui-icons/CloudUpload';
 import XSelect from '../../components/XSelect';
-import withRoot from '../../withRoot';
 import styles from './Dashboard.css';
 import { importFromFile } from '../../api/transactionApi';
+import { loadTransactions } from '../../state/transactions';
 
 const bankOptions = [
   {
@@ -46,18 +46,17 @@ class Import extends React.Component {
 
     this.props.showSnack('Importing transactions...', 100000, 'progress');
 
-    importFromFile(file, bank).then(({ data }) => {
+    importFromFile(file, bank).then(() => {
       this.props.hideSnack('progress');
       this.props.showSnack('Succesfully imported all your transactions!');
       this.props.loadTransactions();
       this.setState(initialState);
-    }).catch(error => {
+    }).catch(() => {
       this.props.hideSnack('progress');
       this.props.showSnack('Something went wrong, please check if you picked correct file and bank');
     });
 
   };
-
 
   handleChangeX = (name, value) => this.setState({ [name]: value });
 
@@ -94,7 +93,7 @@ class Import extends React.Component {
 
             <Fragment>
               <input
-                accept=".csv, .xlsx"
+                accept=".csv, .xlsx, .gsheet"
                 className={styles.hiddenInput}
                 onChange={this.handleChangeFileInput('file')}
                 id="raised-button-file"
@@ -125,6 +124,4 @@ class Import extends React.Component {
   }
 }
 
-export default withRoot(
-  connect(null, { showSnack, hideSnack })(Dashboard)
-);
+export default connect(null, { showSnack, hideSnack, loadTransactions })(Import);

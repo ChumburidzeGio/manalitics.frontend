@@ -1,5 +1,9 @@
 import React from 'react';
 import App from '../../layouts/App';
+import Paper from 'material-ui/Paper';
+import styles from './Dashboard.css';
+import Import from './Import';
+import Export from './Export';
 
 export const Dashboard = () => (
 	<App>
@@ -16,10 +20,10 @@ export const Dashboard = () => (
 			/>
 		</FormControl> */}
 
-		{/* <Paper className={styles.container} elevation={1}>
+		<Paper className={styles.container} elevation={1}>
 			<Import />
 			<Export />
-		</Paper> */}
+		</Paper>
 
 	</App>
 );
