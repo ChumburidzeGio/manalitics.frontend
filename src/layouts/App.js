@@ -77,7 +77,7 @@ App.propTypes = {
     backButton: PropTypes.bool,
 };
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state) => ({
     snackQueue: state.snackbarReducer.queue,
 });
 
