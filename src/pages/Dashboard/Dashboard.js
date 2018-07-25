@@ -7,6 +7,10 @@ import styles from './Dashboard.css';
 import Import from './Import';
 import Export from './Export';
 import TransactionList from './TransactionList';
+import { Zoom } from 'material-ui/transitions';
+import AddIcon from 'material-ui-icons/Add';
+import Button from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
 
 export const Dashboard = () => (
 	<App>
@@ -22,22 +26,31 @@ export const Dashboard = () => (
 				className={styles.searchInput}
 			/>
 		</FormControl> */}
-		<Grid container className={styles.root} spacing={0}>
+		<Grid container className={styles.root} spacing={24}>
 			
-			<Grid item lg={8}>
-				<TransactionList />
-			</Grid>
-
-			<Grid item lg={4}>
-				<Paper className={styles.container} elevation={1}>
-					<List component="nav">
+			<Grid item lg={3} className={styles.gridElement}>
+					<List component="nav" className={styles.container}>
 						<Import />
 						<Export />
 					</List>
-				</Paper>
+			</Grid>
+
+			<Grid item lg={8} className={styles.gridElement}>
+				<TransactionList />
 			</Grid>
 
 		</Grid>
+
+		<Zoom
+          in={true}
+          timeout={300}
+          unmountOnExit
+        >
+          <Button variant="fab" className={styles.fab} color="primary">
+                <AddIcon />
+          </Button>
+        </Zoom>
+
 	</App>
 );
 

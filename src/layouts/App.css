@@ -4,3 +4,7 @@
 .logo {
   flex: 1;
   text-decoration: none; }
+
+.appBar {
+  background: #3366d6 !important;
+  box-shadow: none !important; }

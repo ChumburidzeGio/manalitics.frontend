@@ -1,40 +1,92 @@
 import React from 'react';
 import Paper from 'material-ui/Paper';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
+import Tooltip from 'material-ui/Tooltip';
+import Checkbox from 'material-ui/Checkbox';
 import Button from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
+import DeleteIcon from 'material-ui-icons/Delete';
 import { connect } from 'react-redux';
 import { showSnack, hideSnack } from '../../state/snackbarActions';
-import List from 'material-ui/List';
-import ListSubheader from 'material-ui/List/ListSubheader';
-import Dialog, {
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from 'material-ui/Dialog';
 import moment from 'moment';
 import { loadTransactions } from '../../state/transactions';
 import withRoot from '../../withRoot';
 import client from '../../client';
 import styles from './Dashboard.css';
-import Transaction from './Transaction';
+import PropTypes from 'prop-types';
+// import Transaction from './Transaction';
+import Table, {
+  TableBody,
+  TableCell,
+  TableRow,
+} from 'material-ui/Table';
+import Head from "../../components/TransactionList/Head";
+import classNames from 'classnames';
 
 class TransactionList extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      selected: [],
       searchQuery: '',
       searchResults: [],
+      data: props.transactions.items,
     };
   };
+
+  handleSelectAllClick = (event, checked) => {
+    if (checked) {
+      this.setState(state => ({ selected: this.props.transactions.items.map(n => n.id) }));
+      return;
+    }
+    this.setState({ selected: [] });
+  };
+
+  handleClick = (e, id) => {
+    const { selected } = this.state;
+
+    if (selected.length > 0) {
+      return this.selectById(id);
+    }
+
+    alert(12);
+  };
+
+  handleSelect = (e, id) => {
+    this.selectById(id);
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  selectById = (id) => {
+    const { selected } = this.state;
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1),
+      );
+    }
+
+    this.setState({ selected: newSelected });
+  }
+
+  isSelected = id => this.state.selected.indexOf(id) !== -1;
+
 
   componentDidMount = () => {
     this.props.loadTransactions();
   }
-
-  handleTransactionClick = () => {
-    console.log(12);
-  };
 
   loadMore = () => {
     this.props.loadTransactions();
@@ -86,64 +138,86 @@ class TransactionList extends React.Component {
 
   render() {
 
-    const { transactions } = this.props
+    const { selected } = this.state;
+    const { items, nextPageId } = this.props.transactions;
 
     return (
-      <Paper className={styles.container} elevation={1}>
+      <Paper className={styles.tableRoot + ' ' + styles.container} elevation={1}>
 
-        {this.state.searchQuery ?
-          <List
-            component="nav"
-            subheader={
-              <ListSubheader component="div" disableSticky={true}>Search results</ListSubheader>
-            }>
+        <Toolbar
+          className={classNames(styles.toolbarRoot, {
+            [styles.toolbarHighlight]: selected.length > 0,
+          })}
+        >
+          <div className={styles.toolbarTitle}>
+            {selected.length > 0 ? (
+              <Typography color="inherit" variant="subheading">
+                {selected.length} selected
+                  </Typography>
+            ) : (
+                <Typography variant="display1" className={styles.toolbarTitleText}>
+                  Transactions
+                  </Typography>
+              )}
+          </div>
+          <div className={styles.toolbarSpacer} />
+          <div className={styles.toolbarActions}>
+            {(selected.length > 0) ? (
+              <IconButton aria-label="Delete">
+                <DeleteIcon />
+              </IconButton>
+            ) : (
+                ''
+                // <IconButton aria-label="Filter list">
+                //   <AddIcon />
+                // </IconButton>
+              )}
+          </div>
+        </Toolbar>
 
-            {this.state.searchResults.map(item => {
-              return (
-                <Transaction
-                  id={item.id}
-                  title={item.title}
-                  description={item.date + ' · ' + item.description}
-                  amount={item.amount}
-                />
-              )
-            })}
-
-          </List>
-          :
-          <List
-            component="nav"
-            subheader={
-              <ListSubheader component="div" disableSticky={true}>My transactions</ListSubheader>
-            }>
-
-            {transactions.items && transactions.items.map(group => {
-              return (
-                <div key={group.day}>
-                  <ListSubheader disableSticky={true} style={{ color: '#3b5998' }}>
-                    {this.transformDay(group.day)}
-                  </ListSubheader>
-                  {group.items.map(item => {
-                    return (
-                      <Transaction
-                        key={item.id}
-                        id={item.id}
-                        title={item.title}
-                        amount={item.amount}
-                        onClick={this.handleTransactionClick}
-                      />
-                    )
-                  })}
-                </div>
-              );
-            })}
-
-            {transactions.nextPageId && <Button component="span" fullWidth color="primary" onClick={this.loadMore}>
-              Load more
-            </Button>}
-
-          </List>}
-
+        <div className={styles.tableWrapper}>
+          <Table className={styles.table} aria-labelledby="tableTitle">
+            <Head
+              numSelected={selected.length}
+              onSelectAllClick={this.handleSelectAllClick}
+              rowCount={items.length}
+            />
+            <TableBody>
+              {items
+                .map(item => {
+                  const isSelected = this.isSelected(item.id);
+                  return (
+                    <TableRow
+                      hover
+                      onClick={event => this.handleClick(event, item.id)}
+                      role="checkbox"
+                      aria-checked={isSelected}
+                      tabIndex={0}
+                      key={item.id}
+                      selected={isSelected}
+                    >
+                      <TableCell tabIndex={-1} padding="checkbox" onClick={event => this.handleSelect(event, item.id)}>
+                        <Checkbox checked={isSelected} />
+                      </TableCell>
+                      <TableCell padding="none">{item.date}</TableCell>
+                      <TableCell>
+                        <span className={styles.tableTransactionTitle}>{item.title}</span>
+                        <span className={styles.tableTransactionAccount}>{item.account}</span>
+                      </TableCell>
+                      <TableCell component="th" scope="row" className={styles.amount}>
+                        {item.amount_formated}
+                        <span className={styles.currency}>{item.currency}</span>
+                      </TableCell>
+                      <TableCell>{item.category}</TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+          {nextPageId && <Button component="span" fullWidth color="primary" onClick={this.loadMore}>
+            Load more
+        </Button>}
+        </div>
       </Paper>
     );
   }
@@ -153,6 +227,4 @@ const mapStateToProps = (state) => ({
   transactions: state.transactionReducer
 });
 
-export default withRoot(
-  connect(mapStateToProps, { showSnack, hideSnack, loadTransactions })(TransactionList)
-);
+export default connect(mapStateToProps, { showSnack, hideSnack, loadTransactions })(TransactionList);

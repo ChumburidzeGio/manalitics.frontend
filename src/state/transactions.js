@@ -47,11 +47,11 @@ export default (state = initialState, { type, payload } = {}) => {
     case actionTypes.LOAD_TRANSACTIONS_SUCCESS: {
       itemsOriginal = state.itemsOriginal;
 
-      itemsOriginal = state.itemsOriginal.concat(payload.data.data);
+      items = itemsOriginal = state.itemsOriginal.concat(payload.data.data);
       
-      const grouped = groupBy(itemsOriginal, 'date');
+      // const grouped = groupBy(itemsOriginal, 'date');
 
-      items = Object.keys(grouped).map((key, index) => ({ day: key, items: grouped[key] }));
+      // items = Object.keys(grouped).map((key, index) => ({ day: key, items: grouped[key] }));
 
       nextPageId = payload.data.next_page_url ? state.nextPageId + 1 : null;
 

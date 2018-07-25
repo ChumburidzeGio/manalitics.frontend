@@ -7,17 +7,19 @@ const generateFakeTransactions = (page, amount) => {
     let data = [];
 
     for(let i = from; i < to; i++) {
-        const amount = getRandomInt(-1124,-10);
+        const amount = getRandomInt(-1124,10000);
         data.push({
             id: i,
             title: `Transaction ${i}`,
             amount: amount,
+            amount_formated: amount < 0 ? (amount + '').replace('-', '-€') : '€' + amount,
             date: `2018-${getRandomInt(10,12)}-${getRandomInt(10,31)}`,
             description: 'Description',
             note: 'Note',
             type: 'pay_terminal',
             currency: 'EUR',
             category: 'uncategorized',
+            account: amount < 1000 ? 'Checking account' : 'Savings account',
             is_expense: amount < 0
         });
     }

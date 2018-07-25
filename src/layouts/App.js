@@ -41,7 +41,7 @@ class App extends React.Component {
         return (
             <div className={styles.root}>
 
-                {this.state.withHeader && <AppBar position="static">
+                {this.state.withHeader && <AppBar position="static" className={styles.appBar}>
                     <Toolbar className={styles.toolbar}>
                         {this.state.headerText() &&
                             <IconButton color="inherit" aria-label="Go back" onClick={this.handleBackButton}>
