@@ -2,6 +2,8 @@ import React from 'react';
 import Checkbox from 'material-ui/Checkbox';
 import PropTypes from 'prop-types';
 import { TableRow, TableHead, TableCell } from 'material-ui/Table';
+import { selectTransactionsAll } from '../../state/transactions';
+import { connect } from 'react-redux';
 
 const columnData = [
     { id: 'date', label: 'Date' },
@@ -10,14 +12,14 @@ const columnData = [
     { id: 'category', label: 'Category' },
 ];
 
-const Head = ({ onSelectAllClick, numSelected, rowCount }) => (
+const Head = ({ indeterminate, checked, selectTransactionsAll }) => (
     <TableHead>
         <TableRow>
             <TableCell padding="checkbox">
                 <Checkbox
-                    indeterminate={numSelected > 0 && numSelected < rowCount}
-                    checked={numSelected === rowCount}
-                    onChange={onSelectAllClick}
+                    indeterminate={indeterminate}
+                    checked={checked}
+                    onChange={(e, checked) => selectTransactionsAll(checked)}
                 />
             </TableCell>
             {columnData.map(column => {
@@ -34,10 +36,11 @@ const Head = ({ onSelectAllClick, numSelected, rowCount }) => (
     </TableHead>
 );
 
-Head.propTypes = {
-    numSelected: PropTypes.number.isRequired,
-    onSelectAllClick: PropTypes.func.isRequired,
-    rowCount: PropTypes.number.isRequired,
-};
+Head.propTypes = {};
 
-export default Head;
+const mapStateToProps = (state) => ({
+    indeterminate: selected.length > 0 && selected.length < items.length,
+    checked: selected.length === items.length,
+});
+
+export default connect(mapStateToProps, { selectTransactionsAll })(Head);

@@ -7,21 +7,7 @@ const generateFakeTransactions = (page, amount) => {
     let data = [];
 
     for(let i = from; i < to; i++) {
-        const amount = getRandomInt(-1124,10000);
-        data.push({
-            id: i,
-            title: `Transaction ${i}`,
-            amount: amount,
-            amount_formated: amount < 0 ? (amount + '').replace('-', '-€') : '€' + amount,
-            date: `2018-${getRandomInt(10,12)}-${getRandomInt(10,31)}`,
-            description: 'Description',
-            note: 'Note',
-            type: 'pay_terminal',
-            currency: 'EUR',
-            category: 'uncategorized',
-            account: amount < 1000 ? 'Checking account' : 'Savings account',
-            is_expense: amount < 0
-        });
+        data.push(fakeTransaction(i));
     }
 
     return {
@@ -29,6 +15,25 @@ const generateFakeTransactions = (page, amount) => {
             data,
             next_page_url: 'foo',
         }
+    };
+};
+
+const fakeTransaction = (id) => {
+    const amount = getRandomInt(-1124,10000);
+
+    return {
+        id,
+        title: `Transaction ${id}`,
+        amount: amount,
+        amount_formated: amount < 0 ? (amount + '').replace('-', '-€') : '€' + amount,
+        date: `2018-${getRandomInt(10,12)}-${getRandomInt(10,31)}`,
+        description: 'Description',
+        note: 'Note',
+        type: 'pay_terminal',
+        currency: 'EUR',
+        category: 'uncategorized',
+        account: amount < 1000 ? 'Checking account' : 'Savings account',
+        is_expense: amount < 0
     };
 };
 
@@ -68,13 +73,15 @@ export const importFromFile = ({ file, bank }) => {
     return new Promise((resolve, reject) => setTimeout(reject, 1000));
 };
 
-export const find = ({ id }) => {
+export const find = (id) => {
     if(isEnv('development')) {
         return client().get('transaction.details?id=' + id);
     }
 
     if(getRandBool()) {
-        return new Promise(resolve => setTimeout(resolve, 1000));
+        return new Promise(resolve => setTimeout(resolve({
+            data: fakeTransaction(id)
+        }), 1000));
     }
     
     return new Promise((resolve, reject) => setTimeout(reject, 1000));

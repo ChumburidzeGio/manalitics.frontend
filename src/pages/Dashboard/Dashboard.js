@@ -1,31 +1,21 @@
 import React from 'react';
 import App from '../../layouts/App';
-import Paper from 'material-ui/Paper';
 import List from 'material-ui/List';
 import Grid from 'material-ui/Grid';
 import styles from './Dashboard.css';
 import Import from './Import';
 import Export from './Export';
-import TransactionList from './TransactionList';
+import TransactionList from '../../components/TransactionList';
 import { Zoom } from 'material-ui/transitions';
 import AddIcon from 'material-ui-icons/Add';
 import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
+import Search from './Search';
 
 export const Dashboard = () => (
 	<App>
 
-		{/* <FormControl fullWidth>
-			<Input
-				id="name-simple"
-				type="search"
-				autoFocus
-				placeholder="Search for resources and product types"
-				value={this.state.searchQuery}
-				onChange={this.search}
-				className={styles.searchInput}
-			/>
-		</FormControl> */}
+		<Search />
+
 		<Grid container className={styles.root} spacing={24}>
 			
 			<Grid item lg={3} className={styles.gridElement}>

@@ -3,39 +3,39 @@ import List, { ListItem, ListItemText } from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import Drawer from 'material-ui/Drawer';
 import Typography from 'material-ui/Typography';
-import { find } from '../../state/transactions';
-import styles from './Dashboard.css';
+import { find } from '../../api/transactionApi';
+import styles from './TransactionList.css';
+import { deactivateTransaction } from '../../state/transactions';
+import { connect } from 'react-redux';
 
 class TransactionDrawer extends React.Component {
 
     state = {
-        isOpen: true,
-        isLoading: true,
-        data: {}
+        data: null
     };
 
     componentDidMount = () => {
         find(this.props.id).then(({ data }) => {
-            this.setState({ data: data.transaction });
+            this.setState({ data });
         });
     }
 
-    toggleDrawer = (open) => () => {
-        this.setState({
-            isOpen: open,
-        });
-    };
+    render() { 
 
-    render() {
-        const { title, is_expense, amount, currency } = this.state.data;
+        if(this.props.id === null) {
+            return '';
+        }
+
+        const { title, is_expense, amount, currency, date, type, description } = this.state.data;
+        const { deactivateTransaction } = this.props;
 
         return (
-            <Drawer open={this.state.isOpen} onClose={this.toggleDrawer(false)}>
+            <Drawer open={this.state.isOpen} onClose={deactivateTransaction()}>
                 <div
                     tabIndex={0}
                     role="button"
-                    onClick={this.toggleDrawer(false)}
-                    onKeyDown={this.toggleDrawer(false)}
+                    onClick={deactivateTransaction()}
+                    onKeyDown={deactivateTransaction()}
                     className={styles.drawerList}
                 >
                     {this.state.data && <List>
@@ -70,4 +70,8 @@ class TransactionDrawer extends React.Component {
     }
 }
 
-export default TransactionDrawer;
+const mapStateToProps = (state) => ({
+  id: state.transactionReducer.active
+});
+
+export default connect(mapStateToProps, { deactivateTransaction })(TransactionDrawer);
