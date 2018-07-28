@@ -1,0 +1,18 @@
+.currency {
+  font-weight: 300;
+  margin-left: 10px; }
+
+.amount {
+  font-weight: 500;
+  color: #525f7f !important; }
+
+.title {
+  font-size: 16px;
+  font-weight: 400;
+  display: block;
+  color: #525f7f;
+  line-height: 25px; }
+
+.account {
+  font-size: 14px;
+  line-height: 25px; }

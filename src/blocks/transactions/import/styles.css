@@ -1,0 +1,9 @@
+.uploadButton {
+  margin-top: 25px;
+  border: 1px solid #2196f3 !important; }
+
+.uploadButtonIcon {
+  margin-right: 10px; }
+
+.hiddenInput {
+  display: none; }

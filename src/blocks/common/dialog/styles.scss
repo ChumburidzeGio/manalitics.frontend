@@ -1,0 +1,10 @@
+.root {
+    &>div {
+        overflow: visible!important;
+        width: 100%;
+    }
+};
+
+.content {
+    overflow: visible!important;
+}

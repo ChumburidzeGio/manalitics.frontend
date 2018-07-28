@@ -1,0 +1,39 @@
+.table {
+    min-width: 700px;
+}
+
+.cell {
+    text-transform: uppercase;
+    color: #101010!important;
+}
+
+.tableWrapper {
+    flex: 1;
+}
+
+.toolbarTitle {
+    flex: 0 0 auto;
+}
+
+.toolbarActions {
+    color: #2196f3;
+}
+
+.toolbarSpacer {
+    flex: 1 1 100%;
+}
+
+.toolbarRoot {
+    padding-right: 10px;
+    flex: 1;
+}
+
+.toolbarHighlight {
+    color: rgb(225, 0, 80);
+    background-color: rgb(251, 224, 234);
+}
+
+.toolbarTitleText {
+    font-size: 1.3125em!important;
+    font-weight: bold;
+}

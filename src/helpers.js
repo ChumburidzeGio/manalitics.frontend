@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const getRandomInt = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -78,3 +80,16 @@ export const isEnv = (check) => env('ENV', check);
 
 
 export const api_url = (path, queryParams) => buildUrl(env('API_BASE_URL'), { path, queryParams });
+
+export const client = () => {
+  const token = localStorage.getItem('access_token');
+  const header = token ? `Bearer ${token}` : false;
+
+  return axios.create({
+    baseURL: api_url(),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: header,
+    },
+  });
+}

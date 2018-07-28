@@ -7,8 +7,11 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { sessionService } from 'redux-react-session';
 import thunk from 'redux-thunk';
-import rootReducer from './state/reducers';
-import routes from './routes';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import blue from 'material-ui/colors/blue';
+import green from 'material-ui/colors/green';
+import rootReducer from './blocks/state';
+import routes from './views/routes';
 
 const store = createStore(
   rootReducer,
@@ -20,14 +23,23 @@ sessionService.initSessionService(store, {
   driver: 'LOCALSTORAGE',
 });
 
-export const history = syncHistoryWithStore(browserHistory, store);
+const theme = createMuiTheme({
+  palette: {
+    primary: blue,
+    secondary: green,
+  },
+});
 
-export const App = CreateReactClass({
+const history = syncHistoryWithStore(browserHistory, store);
+
+const App = CreateReactClass({
   render() {
     return (
-      <Provider store={store}>
-        <Router history={history}>{routes}</Router>
-      </Provider>
+        <Provider store={store}>
+          <MuiThemeProvider theme={theme}>
+            <Router history={history}>{routes}</Router>
+          </MuiThemeProvider>
+        </Provider> 
     );
   },
 });
