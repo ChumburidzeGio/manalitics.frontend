@@ -280,7 +280,7 @@ class Editor extends React.Component {
             {this.isUpdate ? 'Update' : 'Create'}
           </Button>
 
-          {this.isUpdate && <Button className={styles.deleteButton} type="button" onClick={this.handleDelete}>
+          {this.isUpdate() && <Button className={styles.deleteButton} type="button" onClick={this.handleDelete}>
             Delete
           </Button>}
 
