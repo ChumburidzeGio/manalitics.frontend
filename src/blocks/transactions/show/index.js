@@ -1,12 +1,24 @@
 import React from 'react';
-import List, { ListItem, ListItemText } from 'material-ui/List';
+import List, { ListItem, ListItemText, ListItemIcon } from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import Drawer from 'material-ui/Drawer';
-import Typography from 'material-ui/Typography';
-import { deactivateTransaction } from '../state';
+import CategoryIcon from '@material-ui/icons/Category';
+import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import NotesIcon from '@material-ui/icons/Notes';
+import { deactivateTransaction, updateEditor } from '../state';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { find } from '../api';
 import styles from './styles.css';
+import { Fab } from '../../common';
+
+const info = [
+    {key: 'category', icon: <CategoryIcon />, label: 'Category', defaultValue: 'Gifts & Donations' },
+    {key: 'date', icon: <AccessTimeIcon />, label: 'Date', defaultValue: '25th Jul, 2018 12:56', format: (value) => {
+        return moment(value).format('Do MMM, YYYY HH:mm');
+    }},
+    {key: 'description', icon: <NotesIcon />, label: 'Description' },
+];
 
 class Show extends React.Component {
 
@@ -26,7 +38,14 @@ class Show extends React.Component {
         setTimeout(this.props.deactivateTransaction, 100);
     }
 
-    render() { 
+    onEdit = () => {
+        this.props.updateEditor({
+            status: 'update',
+            transactionId: this.props.id
+        });
+    }
+
+    render() {
 
         const item = this.state.data;
 
@@ -35,35 +54,33 @@ class Show extends React.Component {
                 <div
                     tabIndex={0}
                     role="button"
-                    onClick={this.onClose}
                     onKeyDown={this.onClose}
                     className={styles.list}
                 >
                     {item && <List>
-                        <ListItem>
-                            <Avatar>H</Avatar>
-                            <ListItemText primary={item.title} />
+                        <ListItem className={styles.header}>
+                            <Avatar>{item.title[0]}</Avatar>
+                            <ListItemText className={styles.title} primary={item.title} secondary={item.amount_formated} />
+                            <Fab type="editInline" onClick={this.onEdit} />
                         </ListItem>
+                        
+                        {info.map(pr => {
+                            let value = item[pr.key] || pr.defaultValue;
 
-                        <div className={styles.details}>
+                            if(pr.format) {
+                                value = pr.format(value);
+                            }
 
-                            <Typography gutterBottom>
-                                <strong>Transaction:</strong> {item.is_expense && '-'}{item.amount} {item.currency}
-                            </Typography>
+                            return value ? (
+                                <ListItem key={pr.key}>
+                                    <ListItemIcon>
+                                        {pr.icon}
+                                    </ListItemIcon>
+                                    <ListItemText className={styles.infoBlock} primary={value} secondary={pr.label} />
+                                </ListItem>
+                            ) : '';
+                        })}
 
-                            <Typography gutterBottom>
-                                <strong>Date:</strong> {item.date}
-                            </Typography>
-
-                            <Typography gutterBottom>
-                                <strong>Type:</strong> {item.type}
-                            </Typography>
-
-                            <Typography gutterBottom>
-                                <strong>Description:</strong> {item.description}
-                            </Typography>
-
-                        </div>
                     </List>}
                 </div>
             </Drawer>
@@ -72,7 +89,7 @@ class Show extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  id: state.transactionReducer.active
+    id: state.transactionReducer.active
 });
 
-export default connect(mapStateToProps, { deactivateTransaction })(Show);
+export default connect(mapStateToProps, { deactivateTransaction, updateEditor })(Show);

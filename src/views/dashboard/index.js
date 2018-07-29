@@ -8,15 +8,11 @@ const Dashboard = () => (
     <Layout>
 		<Transactions.Search />
 		
-        <Grid container spacing={24}>
+        <Grid container spacing={0} className={styles.container}>
 
 			<Grid item lg={3}>
 				<Transactions.Import />
 				<Transactions.Export />
-					{/* <List component="nav" className={styles.container}>
-						<Import />
-						<Export />
-					</List> */}
 			</Grid>
 
 			<Grid item lg={8}>
@@ -26,6 +22,7 @@ const Dashboard = () => (
 			</Grid>
 
 		</Grid>
+
     </Layout>
 );
 

@@ -21,13 +21,13 @@ class Switch extends React.Component {
     return (
       <FormGroup>
         {this.state.checked !== undefined && <FormControlLabel
+          label={this.props.label}
           control={
             <MuiSwitch
               onChange={this.handleChange}
               checked={this.state.checked}
             />
           }
-          label={this.props.label}
         />}
       </FormGroup>
     );
@@ -35,7 +35,7 @@ class Switch extends React.Component {
 }
 
 Switch.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   checked: PropTypes.bool.isRequired,
   label: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,

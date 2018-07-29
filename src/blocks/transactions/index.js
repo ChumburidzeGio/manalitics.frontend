@@ -3,3 +3,4 @@ export { default as Show } from './show';
 export { default as Search } from './search';
 export { default as Import } from './import';
 export { default as Export } from './export';
+export { default as Editor } from './editor';

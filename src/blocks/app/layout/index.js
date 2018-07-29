@@ -3,7 +3,7 @@ import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
-import ArrowBackIcon from 'material-ui-icons/ArrowBack';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';

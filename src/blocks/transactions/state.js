@@ -9,6 +9,7 @@ export const actionTypes = {
   DEACTIVATE_TRANSACTION: 'RRS_DEACTIVATE_TRANSACTION',
   DELETE_SELECTED_SUCCESS: 'RRS_DELETE_SELECTED_SUCCESS',
   DELETE_SELECTED_FAIL: 'RRS_DELETE_SELECTED_FAIL',
+  UPDATE_EDITOR: 'RSS_UPDATE_EDITOR',
 };
 
 export const initialState = {
@@ -16,7 +17,11 @@ export const initialState = {
   nextPageId: 1,
   query: null,
   selected: [],
-  active: null
+  active: null,
+  editor: {
+    status: 'closed', // create, update, closed
+    params: {}
+  }
 };
 
 export function deleteSelected() {
@@ -30,6 +35,11 @@ export function deleteSelected() {
     });
   };
 }
+
+export const updateEditor = ({ status, transactionId }) => ({
+  type: actionTypes.UPDATE_EDITOR,
+  payload: { status, transactionId },
+});
 
 export const deleteSelectedSuccess = (ids) => ({
   type: actionTypes.DELETE_SELECTED_SUCCESS,
@@ -153,6 +163,12 @@ export default (state = initialState, { type, payload, query } = {}) => {
       items = state.items.filter(item => payload.ids.indexOf(item.id) === -1);
       selected = [];
       return Object.assign({}, state, { items, selected });
+    }
+
+    case actionTypes.UPDATE_EDITOR: {
+      return Object.assign({}, state, {
+        editor: payload
+      });
     }
 
     default: {

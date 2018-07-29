@@ -26,11 +26,12 @@ const fakeTransaction = (id) => {
         amount: amount,
         amount_formated: amount < 0 ? (amount + '').replace('-', '-€') : '€' + amount,
         date: `2018-${getRandomInt(10,12)}-${getRandomInt(10,31)}`,
-        description: 'Description',
+        description: `Naam: Amazon Payments Europe SCA \n Omschrijving: JJKN7WSJJ \n 374809327984792387  \n WWW.AMAZON.DE \n WWW.AMAZON.DE \n IBAN: DE968932479832794  \n Kenmerk: 12-11-2018 12:56 9210380912830912803`,
         note: 'Note',
         type: 'pay_terminal',
         currency: 'EUR',
-        category: 'uncategorized',
+        category_id: 'un',
+        category: 'Uncategorized',
         account: amount < 1000 ? 'Checking account' : 'Savings account',
         is_expense: amount < 0
     };
@@ -89,6 +90,30 @@ export const find = (id) => {
 export const deleteByIds = (ids) => {
     if(isEnv('development')) {
         return client().post('transaction.deleteByIds', { ids });
+    }
+
+    if(getRandBool()) {
+        return new Promise(resolve => setTimeout(resolve, 1000));
+    }
+    
+    return new Promise((resolve, reject) => setTimeout(reject, 1000));
+};
+
+export const create = (data) => {
+    if(isEnv('development')) {
+        return client().post('transaction.create', data);
+    }
+
+    if(getRandBool()) {
+        return new Promise(resolve => setTimeout(resolve, 1000));
+    }
+    
+    return new Promise((resolve, reject) => setTimeout(reject, 1000));
+};
+
+export const update = (data) => {
+    if(isEnv('development')) {
+        return client().post('transaction.update', data);
     }
 
     if(getRandBool()) {

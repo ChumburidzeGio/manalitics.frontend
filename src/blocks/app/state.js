@@ -31,11 +31,11 @@ export const snackbarReducer = (state = initialState, { type, payload } = {}) =>
         duration: payload.duration,
         id: lastItemId,
       });
-
+      
       return { queue, lastItemId };
     case actionTypes.HIDE_SNACK:
       queue = state.queue.filter(obj => obj.id !== payload.id);
-      return { queue, ...state };
+      return Object.assign({}, state, { queue });
     default:
       return state;
   }

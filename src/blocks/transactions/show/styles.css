@@ -4,3 +4,18 @@
 
 .details {
   padding: 10px 20px; }
+
+.title h3 {
+  color: #191919 !important;
+  font-size: 17px !important; }
+
+.title p {
+  color: #0067E6 !important;
+  font-weight: 500;
+  letter-spacing: 0.6px; }
+
+.header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
+
+.infoBlock h3 {
+  font-size: 14px; }

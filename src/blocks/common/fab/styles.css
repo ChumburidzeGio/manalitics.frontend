@@ -1,4 +1,4 @@
-.fab {
+.button {
   position: fixed !important;
   bottom: 30px;
   right: 30px;
@@ -7,3 +7,7 @@
   background: #3366d6 !important;
   color: #fff !important;
   border-radius: 50% !important; }
+  .button.editInline {
+    position: absolute !important;
+    bottom: -30px;
+    z-index: 999; }

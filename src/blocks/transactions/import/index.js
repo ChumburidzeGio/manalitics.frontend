@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
-import CloudUpload from 'material-ui-icons/CloudUpload';
+import CloudUpload from '@material-ui/icons/CloudUpload';
 import { ListItem, ListItemText } from 'material-ui/List';
 import { Select, Dialog } from '../../common';
 import { loadTransactions } from '../state';
@@ -74,7 +74,7 @@ class Import extends React.Component {
             onSubmit={this.handleImport}
         >
             <Select 
-              label={'Select your bank'} 
+              placeholder="Select your bank"
               name={'bank'} 
               value={this.state.bank} 
               options={bankOptions} 

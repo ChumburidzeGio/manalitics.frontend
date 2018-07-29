@@ -1,0 +1,38 @@
+.title {
+  padding: 25px 20px 20px !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
+
+.form {
+  display: block;
+  width: 400px;
+  padding: 20px; }
+
+.textField {
+  width: 100%; }
+
+.submitButton {
+  width: 100%;
+  border: 1px solid !important;
+  margin-top: 30px; }
+
+.typeGroup {
+  border: 1px solid #3366d6;
+  border-radius: 5px;
+  width: 70% !important;
+  margin: 0 auto 20px; }
+
+.typeButton {
+  width: 100%;
+  background: 0;
+  border: 0;
+  padding: 7px;
+  cursor: pointer; }
+
+.typeActive {
+  background: #3366d6;
+  color: #fff; }
+
+.deleteButton {
+  width: 100%;
+  color: #f44336 !important;
+  margin-top: 30px; }

@@ -6,9 +6,9 @@ import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 import Input, { InputLabel } from 'material-ui/Input';
 import { MenuItem } from 'material-ui/Menu';
-import ArrowDropDownIcon from 'material-ui-icons/ArrowDropDown';
-import ArrowDropUpIcon from 'material-ui-icons/ArrowDropUp';
-import ClearIcon from 'material-ui-icons/Clear';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import ClearIcon from '@material-ui/icons/Clear';
 import Chip from 'material-ui/Chip';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -83,7 +83,7 @@ const styles = theme => ({
       color: 'black!important',
     },
     '.Select-placeholder': {
-      opacity: 0.42,
+      opacity: 0.55,
       color: theme.palette.common.black,
     },
     '.Select-menu-outer': {
@@ -235,7 +235,7 @@ class XSelect extends React.Component {
 
   render() {
     const {
-      classes, label, name, id, onChange, simpleValue = true, multi = false, ...others
+      classes, label, name, id, onChange, placeholder, simpleValue = true, multi = false, ...others
     } = this.props;
 
     return (
@@ -248,6 +248,7 @@ class XSelect extends React.Component {
           fullWidth
           onChange={this.onChange}
           margin="dense"
+          placeholder={placeholder}
           inputComponent={SelectWrapped}
           inputProps={{
             classes,

@@ -24,7 +24,7 @@ class Search extends React.Component {
                 id="name-simple"
                 type="search"
                 autoFocus
-                placeholder="Search for resources and product types"
+                placeholder="Search for transactions"
                 value={this.state.query}
                 onChange={(e) => this.onChange(e)}
                 className={styles.input}
