@@ -13,7 +13,7 @@ import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import moment from 'moment';
 import * as api from '../api';
 import { showSnack } from '../../app/state';
-import { loadTransactions, updateEditor, deactivateTransaction, activateTransaction } from '../state';
+import { loadTransactions, updateEditor, deactivateTransaction, activateTransaction, deleteActive } from '../state';
 import { Select } from '../../common';
 import styles from './styles.css';
 
@@ -157,6 +157,13 @@ class Editor extends React.Component {
     });
   }
 
+  handleDelete = (e) => {
+    this.props.deleteActive().then(() => {
+      this.props.showSnack('Transaction successfully deleted');
+      this.onClose();
+    });
+  }
+
   isUpdate = () => this.state.status === 'update';
 
   render() {
@@ -273,7 +280,7 @@ class Editor extends React.Component {
             {this.isUpdate ? 'Update' : 'Create'}
           </Button>
 
-          {this.isUpdate && <Button className={styles.deleteButton} type="button">
+          {this.isUpdate && <Button className={styles.deleteButton} type="button" onClick={this.handleDelete}>
             Delete
           </Button>}
 
@@ -290,4 +297,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { showSnack, loadTransactions, updateEditor, deactivateTransaction, activateTransaction })(Editor);
+export default connect(mapStateToProps, { showSnack, loadTransactions, updateEditor, deactivateTransaction, activateTransaction, deleteActive })(Editor);

@@ -65,7 +65,6 @@ class List extends React.Component {
                 {transactions.active !== null && <TransactionShow />}
                 {transactions.editor.status !== 'closed' && <TransactionsEditor />}
                 <Fab onClick={this.onCreateNew} />
-                {this.props.transactions.editor.status}
             </Fragment>
         );
     };

@@ -36,6 +36,19 @@ export function deleteSelected() {
   };
 }
 
+export function deleteActive() {
+  return function (dispatch, getState) {
+    let state = getState().transactionReducer;
+
+    return transactionApi.deleteByIds([state.active]).then(() => {
+      dispatch(deleteSelectedSuccess([state.active]));
+      dispatch(deactivateTransaction());
+    }).catch(() => {
+      dispatch(deleteTransactionsFail());
+    });
+  };
+}
+
 export const updateEditor = ({ status, transactionId }) => ({
   type: actionTypes.UPDATE_EDITOR,
   payload: { status, transactionId },
