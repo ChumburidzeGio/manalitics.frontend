@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
-import Typography from 'material-ui/Typography';
+import Typography from '@material-ui/core/Typography';
 import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
 import { showSnack } from '../../app/state';
@@ -80,55 +80,58 @@ class Auth extends React.Component {
   }
 
   render = () => (
-      <Paper className={styles.container} elevation={4}>
-        <Typography variant="headline" component="h3" className={styles.header}>
-          Welcome to Kamo
-        </Typography>
+    <div className={styles.container} elevation={4}>
+      <Typography variant="title" className={styles.header}>
+        {this.isView('login') ? 'Sign In' : 'Create Account'}
+      </Typography>
+      <Typography variant="title" className={styles.subHeader}>
+        to continue to Kamo
+      </Typography>
 
-        <form autoComplete="off" className={styles.form} onSubmit={this.handleSubmit}>
-          {this.show('name') && <TextField
-            label="Name"
-            className={styles.textField}
-            value={this.state.name}
-            onChange={this.handleChange('name')}
-            type="text"
-            margin="normal"
-          />}
+      <form autoComplete="off" className={styles.form} onSubmit={this.handleSubmit}>
+        {this.show('name') && <TextField
+          label="Name"
+          className={styles.textField}
+          value={this.state.name}
+          onChange={this.handleChange('name')}
+          type="text"
+          margin="normal"
+        />}
 
-          {this.show('email') && <TextField
-            id="email"
-            label="Email"
-            className={styles.textField}
-            value={this.state.email}
-            onChange={this.handleChange('email')}
-            type="email"
-            margin="normal"
-          />}
+        {this.show('email') && <TextField
+          id="email"
+          label="Email"
+          className={styles.textField}
+          value={this.state.email}
+          onChange={this.handleChange('email')}
+          type="email"
+          margin="normal"
+        />}
 
-          {this.show('password') && <TextField
-            id="password"
-            label="Password"
-            className={styles.textField}
-            value={this.state.password}
-            onChange={this.handleChange('password')}
-            type="password"
-            margin="normal"
-          />}
+        {this.show('password') && <TextField
+          id="password"
+          label="Password"
+          className={styles.textField}
+          value={this.state.password}
+          onChange={this.handleChange('password')}
+          type="password"
+          margin="normal"
+        />}
 
-          <Button raised color="primary" className={styles.button} type="submit">
-            Submit
-          </Button>
+        <Button raised color="primary" className={styles.button} type="submit">
+          Submit
+        </Button>
 
-          {!this.isView('login') && <Button className={styles.buttonSecondary} type="submit" onClick={() => this.setView('login')}>
-            Sign In
+        {!this.isView('login') && <Button className={styles.buttonSecondary} type="submit" onClick={() => this.setView('login')}>
+          Sign in instead
+        </Button>}
+
+        {this.isView('login') && <Button className={styles.buttonSecondary} type="submit" onClick={() => this.setView('signup')}>
+          Create account
           </Button>}
 
-          {this.isView('login') && <Button className={styles.buttonSecondary} type="submit" onClick={() => this.setView('signup')}>
-            Sign Up
-          </Button>}
-
-        </form>
-      </Paper>
+      </form>
+    </div>
   );
 }
 

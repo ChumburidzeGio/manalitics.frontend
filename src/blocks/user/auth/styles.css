@@ -4,16 +4,23 @@
   max-width: 500px;
   margin: 20vh auto 0;
   padding: 17px 30px 30px;
-  border-radius: 3px; }
+  border-radius: 8px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+  background: #fff; }
 
 .header {
   width: 100%;
-  font-size: 1.35rem;
-  text-align: center;
-  font-weight: 500;
-  color: #212b35;
   padding-top: 12px;
-  padding-bottom: 3px; }
+  padding-bottom: 5px;
+  font-weight: 400 !important;
+  font-size: 24px !important; }
+
+.subHeader {
+  width: 100%;
+  padding-top: 12px;
+  padding-bottom: 15px;
+  font-weight: 400 !important;
+  font-size: 16px !important; }
 
 .form {
   display: block;
@@ -23,9 +30,17 @@
   width: 100%; }
 
 .button {
-  margin-top: 30px;
-  width: 100%; }
+  float: right;
+  margin-top: 50px;
+  text-transform: initial !important;
+  box-shadow: unset !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  background: #1a72e8 !important; }
 
 .buttonSecondary {
-  margin-top: 10px;
-  width: 100%; }
+  margin-top: 48px;
+  text-transform: initial !important;
+  color: #1a72e8 !important;
+  letter-spacing: .25px;
+  margin-left: -10px; }
