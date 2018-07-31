@@ -20,7 +20,7 @@ const requireGuest = (nextState, replace, next) => {
 
 const authRoutes = [
     <Route path="/" component={Dashboard} onEnter={sessionService.checkAuth} />,
-    // <Route path="/settings" component={Settings} onEnter={sessionService.checkAuth} />,
+    <Route path="/settings" component={Settings} onEnter={sessionService.checkAuth} />,
     // <Route path="/account/:id" component={Account} onEnter={sessionService.checkAuth} />,
     <Route path="/auth" component={Auth} onEnter={requireGuest} />
 ];

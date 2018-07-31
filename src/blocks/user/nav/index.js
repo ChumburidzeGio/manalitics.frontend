@@ -1,15 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Button from 'material-ui/Button';
-import { logout } from '../state';
+import { Link } from 'react-router';
 
-const Nav = ({ logout }) => (
-    <Button onClick={logout} color="inherit">Logout</Button>
+const Nav = () => (
+    <Button color="inherit" component={Link} to="/settings">Settings</Button>
 );
 
-Nav.propTypes = {
-    logout: PropTypes.func.isRequired,
-};
-
-export default connect(null, { logout })(Nav);
+export default Nav;

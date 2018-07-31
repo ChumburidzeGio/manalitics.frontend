@@ -62,7 +62,7 @@ class Import extends React.Component {
     return (
       <Fragment>
         <ListItem button onClick={this.modalToggle}>
-          <ListItemText primary="Import data" secondary="Import from CSV/Excel file" />
+          <ListItemText primary="Import transactions" secondary="Import from CSV/Excel file" />
         </ListItem>
         
         <Dialog

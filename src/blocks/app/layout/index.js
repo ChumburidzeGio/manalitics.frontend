@@ -9,7 +9,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import Snackbar from '../snackbar';
 import styles from './styles.css';
-import { UserNav } from '../../user';
+import * as User from '../../user';
 import Reboot from 'material-ui/Reboot';
 
 const Layout = ({ snackQueue, children, backButton, headerText, withHeader }) => {
@@ -27,7 +27,7 @@ const Layout = ({ snackQueue, children, backButton, headerText, withHeader }) =>
                         <Typography type="title" color="inherit" className={styles.logo} component={Link} to="/" {...extraProps}>
                             {headerText() ? headerText() : 'Kamo'}
                         </Typography>
-                        <UserNav />
+                        <User.Nav />
                     </Toolbar>
                 </AppBar>
             )}

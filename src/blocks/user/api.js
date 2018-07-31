@@ -4,8 +4,7 @@ const fakeAuthSuccessResponse = (user) => ({
   token: '1a2b3c4d',
   data: {
     email: user.email,
-    firstName: 'test',
-    lastName: 'test'
+    name: 'Giorgi Chumburidze',
   }
 });
 

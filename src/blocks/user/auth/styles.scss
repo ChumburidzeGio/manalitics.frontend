@@ -29,7 +29,7 @@
   display: block;
   width: 100%;
 }
-  
+
 .textField {
   width: 100%;
 }
@@ -37,17 +37,18 @@
 .button {
   float: right;
   margin-top: 50px;
-  text-transform: initial!important;
-  box-shadow: unset!important;
-  font-weight: 600!important;
-  border-radius: 4px!important;
-  background: #1a72e8!important;
+  text-transform: initial !important;
+  box-shadow: unset !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  background: #1a72e8 !important;
 }
   
 .buttonSecondary {
-  margin-top: 48px;
+  margin-top: 50px;
   text-transform: initial !important;
   color: #1a72e8 !important;
   letter-spacing: .25px;
   margin-left: -10px;
+  font-size: 15px !important;
 }

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Layout } from '../../blocks/app';
-import { UserAuth } from '../../blocks/user';
+import * as User from '../../blocks/user';
 
 const Auth = () => (
     <Layout withHeader={false}>
-        <UserAuth />
+        <User.Auth />
     </Layout>
 );
 
