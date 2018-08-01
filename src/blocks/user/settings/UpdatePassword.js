@@ -1,22 +1,19 @@
 import React, { Fragment } from 'react';
 import { sessionService } from 'redux-react-session';
 import { ListItem, ListItemText } from 'material-ui/List';
-import TextField from 'material-ui/TextField';
 import { connect } from 'react-redux';
+import TextField from 'material-ui/TextField';
 import { Dialog } from '../../common';
-import { showSnack } from '../../app/state';
 import styles from './styles.css';
-import { update } from '../state';
+import { showSnack } from '../../app/state';
+import * as authApi from '../api';
 
-class UpdateEmail extends React.Component {
+class UpdatePassword extends React.Component {
   state = {
     modalOpen: false,
-    email: '',
+    curentPassword: '',
+    newPassword: '',
   };
-
-  componentDidMount = () => {
-    sessionService.loadUser().then(({ email }) => this.setState({ email }));
-  }
 
   handleChange = name => (event) => {
     this.setState({
@@ -25,10 +22,13 @@ class UpdateEmail extends React.Component {
   }
 
   handleSubmit = () => {
-    const { email } = this.state;
+    const { curentPassword, newPassword } = this.state;
 
-    this.props.update({ email }).then(() => {
+    authApi.update({
+      curentPassword, newPassword
+    }).then(() => {
       this.modalToggle();
+      this.props.showSnack('Password succesfully updated');
     }).catch(() => {
       this.props.showSnack('Something went wrong');
     });
@@ -41,23 +41,32 @@ class UpdateEmail extends React.Component {
     return (
       <Fragment>
         <ListItem button onClick={this.modalToggle}>
-          <ListItemText primary="Email" secondary={this.state.email} />
+          <ListItemText primary="Password" secondary="***********" />
         </ListItem>
 
         <Dialog
-          title="Update your email"
+          title="Update your password"
           open={this.state.modalOpen}
           onClose={this.modalToggle}
           buttonText="Update"
           onSubmit={this.handleSubmit}
         >
           <TextField
-            label="Email"
+            label="New password"
             autoFocus
             className={styles.textField}
-            value={this.state.email}
-            onChange={this.handleChange('email')}
-            type="text"
+            value={this.state.newPassword}
+            onChange={this.handleChange('newPassword')}
+            type="password"
+            margin="normal"
+          />
+          <TextField
+            label="Current password"
+            autoFocus
+            className={styles.textField}
+            value={this.state.curentPassword}
+            onChange={this.handleChange('curentPassword')}
+            type="password"
             margin="normal"
           />
         </Dialog>
@@ -66,4 +75,4 @@ class UpdateEmail extends React.Component {
   }
 }
 
-export default connect(null, { showSnack, update })(UpdateEmail);
+export default connect(null, { showSnack })(UpdatePassword);

@@ -3,21 +3,18 @@ import { sessionService } from 'redux-react-session';
 import { ListItem, ListItemText } from 'material-ui/List';
 import { connect } from 'react-redux';
 import { showSnack } from '../../app/state';
+import { update } from '../state';
 import { Select, Dialog } from '../../common';
 import * as transactionsApi from '../../transactions/api';
 
-const initialState = {
-    modalOpen: false,
-    currency: 'EUR'
-};
-
 class UpdateCurrency extends React.Component {
-    state = initialState;
+    state = {
+        modalOpen: false,
+        currency: 'EUR'
+    };
 
     componentDidMount = () => {
-        sessionService.loadUser().then(({ currency }) => {
-            this.setState({ currency });
-        });
+        sessionService.loadUser().then(({ currency }) => this.setState({ currency }));
 
         transactionsApi.getCurrencies().then((currencyOptions) => {
             this.setState({ currencyOptions });
@@ -27,15 +24,14 @@ class UpdateCurrency extends React.Component {
     handleChangeX = (name, value) => this.setState({ [name]: value })
 
     handleSubmit = () => {
-        const { currency, others } = this.state;
-    
-        api.update({ currency }).then(() => {
-          sessionService.saveUser({ currency, ...others });
-          this.modalToggle();
+        const { currency } = this.state;
+
+        this.props.update({ currency }).then(() => {
+            this.modalToggle();
         }).catch(() => {
-          this.props.showSnack('Something went wrong');
+            this.props.showSnack('Something went wrong');
         });
-      }
+    }
 
     modalToggle = () => this.setState({ modalOpen: !this.state.modalOpen });
 
@@ -67,4 +63,4 @@ class UpdateCurrency extends React.Component {
     }
 }
 
-export default connect(null, { showSnack })(UpdateCurrency);
+export default connect(null, { showSnack, update })(UpdateCurrency);

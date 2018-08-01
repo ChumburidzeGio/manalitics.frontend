@@ -6,20 +6,16 @@ import TextField from 'material-ui/TextField';
 import { Dialog } from '../../common';
 import styles from './styles.css';
 import { showSnack } from '../../app/state';
-
-const initialState = {
-  modalOpen: false,
-};
+import { update } from '../state';
 
 class UpdateName extends React.Component {
-  state = initialState;
+  state = {
+    modalOpen: false,
+    name: '',
+  };
 
   componentDidMount = () => {
-    sessionService.loadUser().then((user) => {
-      this.setState({
-        name: user.name
-      });
-    });
+    sessionService.loadUser().then(({ name }) => this.setState({ name }));
   }
 
   handleChange = name => (event) => {
@@ -29,10 +25,9 @@ class UpdateName extends React.Component {
   }
 
   handleSubmit = () => {
-    const { name, others } = this.state;
+    const { name } = this.state;
 
-    api.update({ name }).then(() => {
-      sessionService.saveUser({ name, ...others });
+    this.props.update({ name }).then(() => {
       this.modalToggle();
     }).catch(() => {
       this.props.showSnack('Something went wrong');
@@ -71,4 +66,4 @@ class UpdateName extends React.Component {
   }
 }
 
-export default connect(null, { showSnack })(UpdateName);
+export default connect(null, { showSnack, update })(UpdateName);

@@ -9,6 +9,7 @@ import * as Transactions from '../../transactions';
 import UpdateName from './UpdateName';
 import UpdateEmail from './UpdateEmail';
 import UpdateCurrency from './UpdateCurrency';
+import UpdatePassword from './UpdatePassword';
 
 class Settings extends React.Component {
   componentDidMount = () => {
@@ -33,6 +34,8 @@ class Settings extends React.Component {
           
           <ListSubheader component="div" className={styles.subheader}>Account</ListSubheader>
 
+          <UpdatePassword />
+          
           <UpdateCurrency />
 
           <ListSubheader component="div" className={styles.subheader}>Import/Export</ListSubheader>

@@ -3,6 +3,10 @@ import { browserHistory } from 'react-router';
 import * as authApi from './api';
 import { showSnack } from '../app/state';
 
+export const actionTypes = {
+  UPDATE_USER_SUCCESS: 'RRS_UPDATE_USER_SUCCESS',
+};
+
 const authCallback = (token, data) => {
   sessionService.saveSession({ token })
     .then(() => {
@@ -14,6 +18,17 @@ const authCallback = (token, data) => {
     })
     .catch(() => { });
 }
+
+export const update = (data) => {
+  return () => {
+    return authApi.update(data)
+      .then(() => {
+        sessionService.loadUser().then((user) => {
+          sessionService.saveUser(Object.assign({}, user, data));
+        });
+      });
+  };
+};
 
 export const login = (user, messages) => {
   return (dispatch) => {
