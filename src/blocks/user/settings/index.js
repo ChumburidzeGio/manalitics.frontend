@@ -2,7 +2,6 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { sessionService } from 'redux-react-session';
-import { showSnack } from '../../app/state';
 import { logout } from '../state';
 import styles from './styles.css';
 import List, { ListItem, ListItemText, ListSubheader } from 'material-ui/List';
@@ -54,4 +53,4 @@ class Settings extends React.Component {
   );
 }
 
-export default connect(null, { showSnack, logout })(Settings);
+export default connect(null, { logout })(Settings);

@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 import { sessionService } from 'redux-react-session';
 import { ListItem, ListItemText } from 'material-ui/List';
+import { connect } from 'react-redux';
+import { showSnack } from '../../app/state';
 import { Select, Dialog } from '../../common';
 import * as transactionsApi from '../../transactions/api';
 
@@ -25,8 +27,15 @@ class UpdateCurrency extends React.Component {
     handleChangeX = (name, value) => this.setState({ [name]: value })
 
     handleSubmit = () => {
-        console.log(12);
-    }
+        const { currency, others } = this.state;
+    
+        api.update({ currency }).then(() => {
+          sessionService.saveUser({ currency, ...others });
+          this.modalToggle();
+        }).catch(() => {
+          this.props.showSnack('Something went wrong');
+        });
+      }
 
     modalToggle = () => this.setState({ modalOpen: !this.state.modalOpen });
 
@@ -58,4 +67,4 @@ class UpdateCurrency extends React.Component {
     }
 }
 
-export default UpdateCurrency;
+export default connect(null, { showSnack })(UpdateCurrency);

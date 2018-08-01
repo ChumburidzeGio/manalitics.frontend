@@ -1,9 +1,11 @@
 import React, { Fragment } from 'react';
 import { sessionService } from 'redux-react-session';
 import { ListItem, ListItemText } from 'material-ui/List';
-import { Dialog } from '../../common';
+import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
+import { Dialog } from '../../common';
 import styles from './styles.css';
+import { showSnack } from '../../app/state';
 
 const initialState = {
   modalOpen: false,
@@ -27,7 +29,14 @@ class UpdateName extends React.Component {
   }
 
   handleSubmit = () => {
-    console.log(12);
+    const { name, others } = this.state;
+
+    api.update({ name }).then(() => {
+      sessionService.saveUser({ name, ...others });
+      this.modalToggle();
+    }).catch(() => {
+      this.props.showSnack('Something went wrong');
+    });
   }
 
   modalToggle = () => this.setState({ modalOpen: !this.state.modalOpen });
@@ -62,4 +71,4 @@ class UpdateName extends React.Component {
   }
 }
 
-export default UpdateName;
+export default connect(null, { showSnack })(UpdateName);

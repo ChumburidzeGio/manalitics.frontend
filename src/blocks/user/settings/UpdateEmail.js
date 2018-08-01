@@ -1,8 +1,10 @@
 import React, { Fragment } from 'react';
 import { sessionService } from 'redux-react-session';
 import { ListItem, ListItemText } from 'material-ui/List';
-import { Dialog } from '../../common';
 import TextField from 'material-ui/TextField';
+import { connect } from 'react-redux';
+import { Dialog } from '../../common';
+import { showSnack } from '../../app/state';
 import styles from './styles.css';
 import * as api from '../api';
 
@@ -14,8 +16,8 @@ class UpdateEmail extends React.Component {
   state = initialState;
 
   componentDidMount = () => {
-    sessionService.loadUser().then(({ email, ...others }) => {
-      this.setState({ email, others });
+    sessionService.loadUser().then((user) => {
+      this.setState({ email: user.email, originalUser: user });
     });
   }
 
@@ -30,8 +32,9 @@ class UpdateEmail extends React.Component {
 
     api.update({ email }).then(() => {
       sessionService.saveUser({ email, ...others });
+      this.modalToggle();
     }).catch(() => {
-      alert('Something went wrong');
+      this.props.showSnack('Something went wrong');
     });
   }
 
@@ -67,4 +70,4 @@ class UpdateEmail extends React.Component {
   }
 }
 
-export default UpdateEmail;
+export default connect(null, { showSnack })(UpdateEmail);
