@@ -122,3 +122,24 @@ export const update = (data) => {
     
     return new Promise((resolve, reject) => setTimeout(reject, 1000));
 };
+
+export const getCurrencies = () => {
+    if(isEnv('development')) {
+        return client().get('transaction.currencies');
+    }
+
+    const currencyOptions = [
+        {
+            value: 'USD',
+            label: 'USD',
+            sign: '$',
+        },
+        {
+            value: 'EUR',
+            label: 'EUR',
+            sign: '€',
+        },
+    ];
+
+    return new Promise(resolve => setTimeout(resolve(currencyOptions), 1000));
+};

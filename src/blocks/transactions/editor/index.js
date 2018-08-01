@@ -20,12 +20,14 @@ import styles from './styles.css';
 const currencies = [
   {
     value: 'USD',
-    label: '$',
+    label: 'USD',
+    sign: '$',
   },
   {
     value: 'EUR',
-    label: '€',
-  },
+    label: 'EUR',
+    sign: '€',
+  }
 ];
 
 const categories = [
@@ -84,7 +86,7 @@ class Editor extends React.Component {
 
     setTimeout(this.setState({ isOpen: true, status, transactionId }), 200);
 
-    if(status === 'update') {
+    if (status === 'update') {
       api.find(this.props.editor.transactionId).then(({ data }) => {
         this.setState({
           id: data.id,
@@ -137,9 +139,9 @@ class Editor extends React.Component {
 
   handleChangeSelect = (name, value) => this.setState({ [name]: value })
 
-  getCurreny = () => {
+  getCurrenySign = () => {
     const currency = currencies.find(item => item.value === this.state.currency);
-    return currency.label;
+    return currency.sign;
   }
 
   handleSubmit = (e) => {
@@ -210,7 +212,7 @@ class Editor extends React.Component {
                 onChange={this.handleAmountChange}
                 type="text"
                 InputProps={{
-                  startAdornment: <InputAdornment position="start">{this.getCurreny()}</InputAdornment>,
+                  startAdornment: <InputAdornment position="start">{this.getCurrenySign()}</InputAdornment>,
                   inputComponent: MoneyInput
                 }}
               />

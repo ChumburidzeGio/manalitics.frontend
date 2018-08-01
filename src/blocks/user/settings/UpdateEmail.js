@@ -4,6 +4,7 @@ import { ListItem, ListItemText } from 'material-ui/List';
 import { Dialog } from '../../common';
 import TextField from 'material-ui/TextField';
 import styles from './styles.css';
+import * as api from '../api';
 
 const initialState = {
   modalOpen: false,
@@ -13,10 +14,8 @@ class UpdateEmail extends React.Component {
   state = initialState;
 
   componentDidMount = () => {
-    sessionService.loadUser().then((user) => {
-      this.setState({
-        email: user.email
-      });
+    sessionService.loadUser().then(({ email, ...others }) => {
+      this.setState({ email, others });
     });
   }
 
@@ -27,7 +26,13 @@ class UpdateEmail extends React.Component {
   }
 
   handleSubmit = () => {
-    console.log(12);
+    const { email, others } = this.state;
+
+    api.update({ email }).then(() => {
+      sessionService.saveUser({ email, ...others });
+    }).catch(() => {
+      alert('Something went wrong');
+    });
   }
 
   modalToggle = () => this.setState({ modalOpen: !this.state.modalOpen });

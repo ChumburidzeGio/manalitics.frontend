@@ -1,10 +1,11 @@
-import { isEnv, client } from '../../helpers';
+import { isEnv, client, getRandBool } from '../../helpers';
 
 const fakeAuthSuccessResponse = (user) => ({
   token: '1a2b3c4d',
   data: {
     email: user.email,
     name: 'Giorgi Chumburidze',
+    currency: 'EUR',
   }
 });
 
@@ -34,4 +35,16 @@ export const signup = (user) => {
 
 export const logout = () => {
   return new Promise(resolve => setTimeout(resolve, 1000));
+};
+
+export const update = (data) => {
+  if (isEnv('development')) {
+    return client().post('auth/update', data);
+  }
+
+  if(getRandBool()) {
+    return new Promise(resolve => setTimeout(resolve, 1000));
+  }
+
+  return new Promise((resolve, reject) => setTimeout(reject, 1000));
 };
