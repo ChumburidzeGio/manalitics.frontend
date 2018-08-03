@@ -5,7 +5,7 @@ const generateFakeTransactions = (page, amount) => {
     const to = page * amount;
     let data = [];
 
-    for(let i = from; i < to; i++) {
+    for (let i = from; i < to; i++) {
         data.push(fakeTransaction(i));
     }
 
@@ -18,14 +18,14 @@ const generateFakeTransactions = (page, amount) => {
 };
 
 const fakeTransaction = (id) => {
-    const amount = getRandomInt(-1124,10000);
+    const amount = getRandomInt(-1124, 10000);
 
     return {
         id,
         title: `Transaction ${id}`,
         amount: amount,
         amount_formated: amount < 0 ? (amount + '').replace('-', '-€') : '€' + amount,
-        date: `2018-${getRandomInt(10,12)}-${getRandomInt(10,31)}`,
+        date: `2018-${getRandomInt(10, 12)}-${getRandomInt(10, 31)}`,
         description: `Naam: Amazon Payments Europe SCA \n Omschrijving: JJKN7WSJJ \n 374809327984792387  \n WWW.AMAZON.DE \n WWW.AMAZON.DE \n IBAN: DE968932479832794  \n Kenmerk: 12-11-2018 12:56 9210380912830912803`,
         note: 'Note',
         type: 'pay_terminal',
@@ -37,20 +37,20 @@ const fakeTransaction = (id) => {
     };
 };
 
-export const load = ({page, query}) => {
-    if(isEnv('development')) {
+export const load = ({ page, query }) => {
+    if (isEnv('development')) {
         return client().get(`/transactions?page=${page}&query=${query}`);
     }
 
-    if(page < 4) {
+    if (page < 4) {
         return new Promise(resolve => setTimeout(resolve(generateFakeTransactions(page, 10)), 1000));
     }
-    
+
     return new Promise((resolve, reject) => setTimeout(reject, 1000));
 };
 
 export const importFromFile = ({ file, bank }) => {
-    if(isEnv('development')) {
+    if (isEnv('development')) {
 
         const formData = new FormData();
 
@@ -66,65 +66,65 @@ export const importFromFile = ({ file, bank }) => {
         return client().post('import.fromFile', formData, config);
     }
 
-    if(getRandBool()) {
+    if (getRandBool()) {
         return new Promise(resolve => setTimeout(resolve, 1000));
     }
-    
+
     return new Promise((resolve, reject) => setTimeout(reject, 1000));
 };
 
 export const find = (id) => {
-    if(isEnv('development')) {
+    if (isEnv('development')) {
         return client().get('transaction.details?id=' + id);
     }
 
-    if(getRandBool()) {
+    if (getRandBool()) {
         return new Promise(resolve => setTimeout(resolve({
             data: fakeTransaction(id)
         }), 1000));
     }
-    
+
     return new Promise((resolve, reject) => setTimeout(reject, 1000));
 };
 
 export const deleteByIds = (ids) => {
-    if(isEnv('development')) {
+    if (isEnv('development')) {
         return client().post('transaction.deleteByIds', { ids });
     }
 
-    if(getRandBool()) {
+    if (getRandBool()) {
         return new Promise(resolve => setTimeout(resolve, 1000));
     }
-    
+
     return new Promise((resolve, reject) => setTimeout(reject, 1000));
 };
 
 export const create = (data) => {
-    if(isEnv('development')) {
+    if (isEnv('development')) {
         return client().post('transaction.create', data);
     }
 
-    if(getRandBool()) {
+    if (getRandBool()) {
         return new Promise(resolve => setTimeout(resolve, 1000));
     }
-    
+
     return new Promise((resolve, reject) => setTimeout(reject, 1000));
 };
 
 export const update = (data) => {
-    if(isEnv('development')) {
+    if (isEnv('development')) {
         return client().post('transaction.update', data);
     }
 
-    if(getRandBool()) {
+    if (getRandBool()) {
         return new Promise(resolve => setTimeout(resolve, 1000));
     }
-    
+
     return new Promise((resolve, reject) => setTimeout(reject, 1000));
 };
 
 export const getCurrencies = () => {
-    if(isEnv('development')) {
+    if (isEnv('development')) {
         return client().get('transaction.currencies');
     }
 
@@ -142,4 +142,32 @@ export const getCurrencies = () => {
     ];
 
     return new Promise(resolve => setTimeout(resolve(currencyOptions), 1000));
+};
+
+
+export const getCategories = () => {
+    if (isEnv('development')) {
+        return client().get('transaction.categories');
+    }
+
+    const categoryOptions = [
+        {
+            label: 'Transacport',
+            value: 'tr',
+        },
+        {
+            label: 'Clothing',
+            value: 'cl',
+        },
+        {
+            label: 'Hairdresser',
+            value: 'hr',
+        },
+        {
+            label: 'Uncategorized',
+            value: 'un',
+        },
+    ];
+
+    return new Promise(resolve => setTimeout(resolve(categoryOptions), 1000));
 };

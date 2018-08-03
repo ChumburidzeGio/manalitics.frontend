@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import { sessionService } from 'redux-react-session';
 import { ListItem, ListItemText } from 'material-ui/List';
 import { connect } from 'react-redux';
 import TextField from 'material-ui/TextField';
