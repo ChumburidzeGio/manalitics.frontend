@@ -17,38 +17,6 @@ import { loadTransactions, updateEditor, deactivateTransaction, activateTransact
 import { Select } from '../../common';
 import styles from './styles.css';
 
-const currencies = [
-  {
-    value: 'USD',
-    label: 'USD',
-    sign: '$',
-  },
-  {
-    value: 'EUR',
-    label: 'EUR',
-    sign: '€',
-  }
-];
-
-const categories = [
-  {
-    label: 'Transacport',
-    value: 'tr',
-  },
-  {
-    label: 'Clothing',
-    value: 'cl',
-  },
-  {
-    label: 'Hairdresser',
-    value: 'hr',
-  },
-  {
-    label: 'Uncategorized',
-    value: 'un',
-  }
-];
-
 class MoneyInput extends React.Component {
   render() {
     const mask = createNumberMask({
@@ -73,18 +41,23 @@ class Editor extends React.Component {
 
   state = {
     currency: 'EUR',
+    currencyOptions: [],
     date: moment().format("YYYY-MM-DDT00:00"),
     amount: '-0.00',
     isExpense: true,
     title: '',
     description: '',
     category: null,
+    categoryOptions: [],
   };
 
   componentDidMount = () => {
     const { status, transactionId } = this.props.editor;
 
     setTimeout(this.setState({ isOpen: true, status, transactionId }), 200);
+
+    api.getCategories().then((categoryOptions) => this.setState({ categoryOptions }));
+    api.getCurrencies().then((currencyOptions) => this.setState({ currencyOptions }));
 
     if (status === 'update') {
       api.find(this.props.editor.transactionId).then(({ data }) => {
@@ -140,8 +113,8 @@ class Editor extends React.Component {
   handleChangeSelect = (name, value) => this.setState({ [name]: value })
 
   getCurrenySign = () => {
-    const currency = currencies.find(item => item.value === this.state.currency);
-    return currency.sign;
+    const currency = this.state.currencyOptions.find(item => item.value === this.state.currency);
+    return (currency || {sign: ''}).sign;
   }
 
   handleSubmit = (e) => {
@@ -231,7 +204,7 @@ class Editor extends React.Component {
                 }}
                 margin="normal"
               >
-                {currencies.map(option => (
+                {this.state.currencyOptions.map(option => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.value}
                   </MenuItem>
@@ -249,6 +222,14 @@ class Editor extends React.Component {
             margin="normal"
           />
 
+          <Select
+            placeholder="Category"
+            name="category"
+            value={this.state.category}
+            options={this.state.categoryOptions}
+            onChange={this.handleChangeSelect}
+          />
+
           <TextField
             label="Description"
             className={styles.textField}
@@ -257,14 +238,6 @@ class Editor extends React.Component {
             type="text"
             multiline
             margin="normal"
-          />
-
-          <Select
-            placeholder="Category"
-            name="category"
-            value={this.state.category}
-            options={categories}
-            onChange={this.handleChangeSelect}
           />
 
           <TextField
@@ -279,7 +252,7 @@ class Editor extends React.Component {
           />
 
           <Button className={styles.submitButton} color="primary" type="submit">
-            {this.isUpdate ? 'Update' : 'Create'}
+            {this.isUpdate() ? 'Update' : 'Create'}
           </Button>
 
           {this.isUpdate() && <Button className={styles.deleteButton} type="button" onClick={this.handleDelete}>
