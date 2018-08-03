@@ -23,9 +23,9 @@ const columns = [
             </Fragment>
         )
     },
-    { id: 'amount', label: 'Amount' },
+    { id: 'category', label: 'Category' },
     {
-        id: 'category', label: 'Category', render: (item) => (
+        id: 'amount', label: 'Amount', render: (item) => (
             <Fragment>
                 {item.amount_formated}
                 <span className={styles.currency}>{item.currency}</span>
