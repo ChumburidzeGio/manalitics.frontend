@@ -1,6 +1,7 @@
 import React from 'react';
 import Grid from 'material-ui/Grid';
 import { Layout } from '../../blocks/app';
+import { Paper } from '../../blocks/common';
 import * as Transactions from '../../blocks/transactions';
 import styles from './styles.css';
 
@@ -16,9 +17,9 @@ const Dashboard = () => (
 			</Grid>
 
 			<Grid item lg={8}>
-				<div className={styles.transactions}>
+				<Paper bordered>
                 	<Transactions.List />
-				</div>
+				</Paper>
 			</Grid>
 
 		</Grid>

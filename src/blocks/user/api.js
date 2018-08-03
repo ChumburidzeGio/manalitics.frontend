@@ -1,26 +1,36 @@
 import { isEnv, client, getRandBool } from '../../helpers';
+import * as factories from '../../factories';
 
-const fakeAuthSuccessResponse = (user) => ({
-  token: '1a2b3c4d',
-  data: {
-    email: user.email,
-    name: 'Giorgi Chumburidze',
-    currency: 'EUR',
-  }
-});
-
+/**
+ * Sign in user with email and password
+ *
+ * @augments user.email String
+ * @augments user.password String
+ * 
+ * @return Promise
+ */
 export const login = (user) => {
   if (isEnv('development')) {
     return client().post('auth/login', user);
   }
 
   if (user.email === 'chumburidze.giorgi@outlook.com') {
-    return new Promise(resolve => setTimeout(resolve(fakeAuthSuccessResponse(user)), 1000));
+    const response = factories.generateAuthResponse(user);
+    return new Promise(resolve => setTimeout(resolve(response), 1000));
   }
 
   return new Promise((resolve, reject) => setTimeout(reject, 1000));
 };
 
+/**
+ * Sign up user with name, email, password
+ *
+ * @augments user.name String
+ * @augments user.email String
+ * @augments user.password String
+ * 
+ * @return Promise
+ */
 export const signup = (user) => {
   if (isEnv('development')) {
     return client().post('auth/signup', user);
@@ -33,13 +43,29 @@ export const signup = (user) => {
   return new Promise((resolve, reject) => setTimeout(reject, 1000));
 };
 
+/**
+ * Log out user
+ * 
+ * @return Promise
+ */
 export const logout = () => {
   return new Promise(resolve => setTimeout(resolve, 1000));
 };
 
-export const update = (data) => {
+/**
+ * Update user
+ * 
+ * @augments [user.name] String
+ * @augments [user.email] String
+ * @augments [user.currency] String
+ * @augments [user.current_pass] String
+ * @augments [user.new_pass] String
+ * 
+ * @return Promise
+ */
+export const update = (user) => {
   if (isEnv('development')) {
-    return client().post('auth/update', data);
+    return client().post('auth/update', user);
   }
 
   if(getRandBool()) {

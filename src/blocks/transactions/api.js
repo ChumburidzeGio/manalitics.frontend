@@ -1,41 +1,5 @@
-import { getRandomInt, getRandBool, isEnv, client } from '../../helpers';
-
-const generateFakeTransactions = (page, amount) => {
-    const from = (page - 1) * amount;
-    const to = page * amount;
-    let data = [];
-
-    for (let i = from; i < to; i++) {
-        data.push(fakeTransaction(i));
-    }
-
-    return {
-        data: {
-            data,
-            next_page_url: 'foo',
-        }
-    };
-};
-
-const fakeTransaction = (id) => {
-    const amount = getRandomInt(-1124, 10000);
-
-    return {
-        id,
-        title: `Transaction ${id}`,
-        amount: amount,
-        amount_formated: amount < 0 ? (amount + '').replace('-', '-€') : '€' + amount,
-        date: `2018-${getRandomInt(10, 12)}-${getRandomInt(10, 31)}`,
-        description: `Naam: Amazon Payments Europe SCA \n Omschrijving: JJKN7WSJJ \n 374809327984792387  \n WWW.AMAZON.DE \n WWW.AMAZON.DE \n IBAN: DE968932479832794  \n Kenmerk: 12-11-2018 12:56 9210380912830912803`,
-        note: 'Note',
-        type: 'pay_terminal',
-        currency: 'EUR',
-        category_id: 'un',
-        category: 'Uncategorized',
-        account: amount < 1000 ? 'Checking account' : 'Savings account',
-        is_expense: amount < 0
-    };
-};
+import { getRandBool, isEnv, client } from '../../helpers';
+import * as factories from '../../factories';
 
 export const load = ({ page, query }) => {
     if (isEnv('development')) {
@@ -43,11 +7,12 @@ export const load = ({ page, query }) => {
     }
 
     if (page < 4) {
-        return new Promise(resolve => setTimeout(resolve(generateFakeTransactions(page, 10)), 1000));
+        const transactions = factories.generateTransactionCollection(page, 10);
+        return new Promise(resolve => setTimeout(resolve(transactions, 1000)));
     }
 
     return new Promise((resolve, reject) => setTimeout(reject, 1000));
-};
+}
 
 export const importFromFile = ({ file, bank }) => {
     if (isEnv('development')) {
@@ -71,7 +36,7 @@ export const importFromFile = ({ file, bank }) => {
     }
 
     return new Promise((resolve, reject) => setTimeout(reject, 1000));
-};
+}
 
 export const find = (id) => {
     if (isEnv('development')) {
@@ -80,12 +45,12 @@ export const find = (id) => {
 
     if (getRandBool()) {
         return new Promise(resolve => setTimeout(resolve({
-            data: fakeTransaction(id)
+            data: factories.generateTransaction(id)
         }), 1000));
     }
 
     return new Promise((resolve, reject) => setTimeout(reject, 1000));
-};
+}
 
 export const deleteByIds = (ids) => {
     if (isEnv('development')) {
@@ -97,7 +62,7 @@ export const deleteByIds = (ids) => {
     }
 
     return new Promise((resolve, reject) => setTimeout(reject, 1000));
-};
+}
 
 export const create = (data) => {
     if (isEnv('development')) {
@@ -109,7 +74,7 @@ export const create = (data) => {
     }
 
     return new Promise((resolve, reject) => setTimeout(reject, 1000));
-};
+}
 
 export const update = (data) => {
     if (isEnv('development')) {
@@ -121,28 +86,16 @@ export const update = (data) => {
     }
 
     return new Promise((resolve, reject) => setTimeout(reject, 1000));
-};
+}
 
 export const getCurrencies = () => {
     if (isEnv('development')) {
         return client().get('transaction.currencies');
     }
 
-    const currencyOptions = [
-        {
-            value: 'USD',
-            label: 'USD',
-            sign: '$',
-        },
-        {
-            value: 'EUR',
-            label: 'EUR',
-            sign: '€',
-        },
-    ];
-
+    const currencyOptions = factories.getCurrencies();
     return new Promise(resolve => setTimeout(resolve(currencyOptions), 1000));
-};
+}
 
 
 export const getCategories = () => {
@@ -150,24 +103,6 @@ export const getCategories = () => {
         return client().get('transaction.categories');
     }
 
-    const categoryOptions = [
-        {
-            label: 'Transacport',
-            value: 'tr',
-        },
-        {
-            label: 'Clothing',
-            value: 'cl',
-        },
-        {
-            label: 'Hairdresser',
-            value: 'hr',
-        },
-        {
-            label: 'Uncategorized',
-            value: 'un',
-        },
-    ];
-
+    const categoryOptions = factories.getCategories();
     return new Promise(resolve => setTimeout(resolve(categoryOptions), 1000));
-};
+}

@@ -3,6 +3,7 @@ import TextField from 'material-ui/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
+import { Paper } from '../../common';
 import { showSnack } from '../../app/state';
 import { login, signup } from '../state';
 import styles from './styles.css';
@@ -79,7 +80,7 @@ class Auth extends React.Component {
   }
 
   render = () => (
-    <div className={styles.container} elevation={4}>
+    <Paper className={styles.container} raised>
       <Typography variant="title" className={styles.header}>
         {this.isView('login') ? 'Sign In' : 'Create Account'}
       </Typography>
@@ -130,7 +131,7 @@ class Auth extends React.Component {
           </Button>}
 
       </form>
-    </div>
+    </Paper>
   );
 }
 

@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { sessionService } from 'redux-react-session';
 import { logout } from '../state';
+import { Paper } from '../../common';
 import styles from './styles.css';
 import List, { ListItem, ListItemText, ListSubheader } from 'material-ui/List';
 import * as Transactions from '../../transactions';
@@ -17,42 +18,39 @@ class Settings extends React.Component {
   }
 
   render = () => (
-    <div className={styles.root}>
+    <Paper className={styles.container} raised>
 
-      <div className={styles.container}>
-
-        <Typography variant="title" className={styles.header}>
-            Settings
+      <Typography variant="title" className={styles.header}>
+        Settings
         </Typography>
 
-        <List>
-          <ListSubheader component="div" className={styles.subheader}>Personal details</ListSubheader>
+      <List>
+        <ListSubheader component="div" className={styles.subheader}>Personal details</ListSubheader>
 
-          <UpdateName />
+        <UpdateName />
 
-          <UpdateEmail />
-          
-          <ListSubheader component="div" className={styles.subheader}>Account</ListSubheader>
+        <UpdateEmail />
 
-          <UpdatePassword />
-          
-          <UpdateCurrency />
+        <ListSubheader component="div" className={styles.subheader}>Account</ListSubheader>
 
-          <ListSubheader component="div" className={styles.subheader}>Import/Export</ListSubheader>
+        <UpdatePassword />
 
-          <Transactions.Import />
+        <UpdateCurrency />
 
-				  <Transactions.Export />
+        <ListSubheader component="div" className={styles.subheader}>Import/Export</ListSubheader>
 
-          <ListSubheader component="div" className={styles.subheader}>Others</ListSubheader>
+        <Transactions.Import />
 
-          <ListItem button onClick={this.props.logout}>
-            <ListItemText primary="Sign out" />
-          </ListItem>
-        </List>
+        <Transactions.Export />
 
-      </div>
-    </div>
+        <ListSubheader component="div" className={styles.subheader}>Others</ListSubheader>
+
+        <ListItem button onClick={this.props.logout}>
+          <ListItemText primary="Sign out" />
+        </ListItem>
+      </List>
+
+    </Paper>
   );
 }
 
