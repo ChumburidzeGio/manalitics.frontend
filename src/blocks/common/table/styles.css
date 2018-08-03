@@ -23,7 +23,8 @@
 
 .toolbarHighlight {
   color: #e10050;
-  background-color: #fbe0ea; }
+  background-color: #fbe0ea;
+  border-radius: 8px 8px 0 0; }
 
 .toolbarTitleText {
   font-size: 1.3125em !important;

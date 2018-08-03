@@ -12,9 +12,27 @@ import { connect } from 'react-redux';
 import styles from './styles.css';
 import TransactionShow from '../show';
 import TransactionsEditor from '../editor';
+import moment from 'moment';
+
+const humanizeDate = (date) => {
+    return moment(date).calendar(null, {
+        sameDay: '[Today]',
+        nextDay: '[Tomorrow]',
+        nextWeek: 'dddd',
+        lastDay: '[Yesterday]',
+        lastWeek: '[Last] dddd',
+        sameElse: 'DD/MM/YYYY'
+    });
+}
 
 const columns = [
-    { id: 'date', label: 'Date' },
+    {
+        id: 'date', label: 'Date', padding: "none", render: (item) => (
+            <Fragment>
+                {humanizeDate(item.date)}
+            </Fragment>
+        )
+    },
     {
         id: 'title', label: 'Title', render: (item) => (
             <Fragment>
@@ -25,9 +43,9 @@ const columns = [
     },
     { id: 'category', label: 'Category' },
     {
-        id: 'amount', label: 'Amount', render: (item) => (
+        id: 'amount', label: 'Amount', padding: "none", render: (item) => (
             <Fragment>
-                {item.amount_formated}
+                <span className={styles.amount}>{item.amount_formated}</span>
                 <span className={styles.currency}>{item.currency}</span>
             </Fragment>
         )
@@ -41,7 +59,7 @@ class List extends React.Component {
 
     onCreateNew = () => {
         this.props.updateEditor({
-          status: 'create'
+            status: 'create'
         });
     }
 

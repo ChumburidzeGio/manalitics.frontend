@@ -25,7 +25,7 @@ export const generateTransaction = (id) => {
         title: `Transaction ${id}`,
         amount: amount,
         amount_formated: amount < 0 ? (amount + '').replace('-', '-€') : '€' + amount,
-        date: `2018-${getRandomInt(10, 12)}-${getRandomInt(10, 31)}`,
+        date: `2018-0${getRandomInt(7, 9)}-${getRandomInt(10, 31)}`,
         description: `Naam: Amazon Payments Europe SCA \n Omschrijving: JJKN7WSJJ \n 374809327984792387  \n WWW.AMAZON.DE \n WWW.AMAZON.DE \n IBAN: DE968932479832794  \n Kenmerk: 12-11-2018 12:56 9210380912830912803`,
         note: 'Note',
         type: 'pay_terminal',

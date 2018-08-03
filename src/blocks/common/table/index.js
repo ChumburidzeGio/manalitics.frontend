@@ -61,7 +61,7 @@ export const Head = ({ columns, selected, items, onSelectAll }) => {
           return (
             <TableCell
               key={column.id}
-              padding={'default'}
+              padding={column.padding || 'default'}
             >
               {column.label}
             </TableCell>

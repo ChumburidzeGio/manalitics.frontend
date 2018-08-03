@@ -17,7 +17,7 @@ const Dashboard = () => (
 			</Grid>
 
 			<Grid item lg={8}>
-				<Paper bordered>
+				<Paper raised>
                 	<Transactions.List />
 				</Paper>
 			</Grid>
