@@ -27,9 +27,12 @@ class UpdatePassword extends React.Component {
   handleSubmit = () => {
     const { curentPassword, newPassword } = this.state;
 
-    const validator = validate({ name }, {
+    const validator = validate({ curentPassword, newPassword }, {
       curentPassword: 'required|string',
       newPassword: 'required|string',
+    }, {
+      curentPassword: 'current password',
+      newPassword: 'new password',
     });
 
     if (validator.fails()) {
