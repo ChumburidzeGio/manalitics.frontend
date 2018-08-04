@@ -49,6 +49,10 @@ export const signup = (user) => {
  * @return Promise
  */
 export const logout = () => {
+  if (isEnv('development')) {
+    return client().post('auth/logout');
+  }
+
   return new Promise(resolve => setTimeout(resolve, 1000));
 };
 
