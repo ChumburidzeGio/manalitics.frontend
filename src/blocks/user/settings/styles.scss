@@ -2,6 +2,16 @@
 	max-width: 800px;
 	margin: 30px auto;
 	vertical-align: middle;
+
+	@media (max-width: 800px) {
+		max-width: 500px;
+	}
+
+	@media (max-width: 500px) {
+		margin: 0;
+		border-radius: 0;
+		height: 100vh;
+	}
 }
 
 .header {

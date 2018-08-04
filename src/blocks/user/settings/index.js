@@ -22,7 +22,7 @@ class Settings extends React.Component {
 
       <Typography variant="title" className={styles.header}>
         Settings
-        </Typography>
+      </Typography>
 
       <List>
         <ListSubheader component="div" className={styles.subheader}>Personal details</ListSubheader>

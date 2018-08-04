@@ -90,7 +90,19 @@ export const update = (data) => {
 
 export const getCurrencies = () => {
     if (isEnv('development')) {
-        return client().get('transaction.currencies');
+        return client().get('db.currencies').then(({ data }) => {
+            const items = [];
+
+            for(const index in data) { 
+                items.push({
+                    value: index,
+                    label: index,
+                    sign: data[index]
+                });
+            }
+            
+            return items;
+        });
     }
 
     const currencyOptions = factories.getCurrencies();
