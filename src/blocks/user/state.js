@@ -33,7 +33,7 @@ export const update = (data) => {
 export const login = (user, messages) => {
   return (dispatch) => {
     return authApi.login(user)
-      .then(({ token, data }) => authCallback(token, data))
+      .then(({ token, user }) => authCallback(token, user))
       .catch(() => dispatch(showSnack(messages.error)));
   };
 };
@@ -41,7 +41,7 @@ export const login = (user, messages) => {
 export const signup = (user, messages) => {
   return (dispatch) => {
     return authApi.signup(user)
-      .then(({ token, data }) => authCallback(token, data))
+      .then(({ token, user }) => authCallback(token, user))
       .catch(() => dispatch(showSnack(messages.error)));
   };
 };

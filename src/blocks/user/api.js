@@ -11,7 +11,7 @@ import * as factories from '../../factories';
  */
 export const login = (user) => {
   if (isEnv('development')) {
-    return client().post('auth/login', user);
+    return client().post('auth/login', user).then(response => response.data);
   }
 
   if (user.email === 'chumburidze.giorgi@outlook.com') {
@@ -33,7 +33,7 @@ export const login = (user) => {
  */
 export const signup = (user) => {
   if (isEnv('development')) {
-    return client().post('auth/signup', user);
+    return client().post('auth/register', user).then(response => response.data);
   }
 
   if (user.email === 'chumburidze.giorgi@outlook.com') {

@@ -75,7 +75,7 @@ export const getCategories = () => {
 
 export const generateAuthResponse = (user) => ({
   token: '1a2b3c4d',
-  data: {
+  user: {
     email: user.email,
     name: 'Giorgi Chumburidze',
     currency: 'EUR',

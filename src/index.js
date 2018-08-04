@@ -1,4 +1,5 @@
 import React from 'react';
+import 'babel-polyfill';
 import ReactDOM from 'react-dom';
 import CreateReactClass from 'create-react-class';
 import { Provider } from 'react-redux';

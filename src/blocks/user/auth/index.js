@@ -3,13 +3,15 @@ import TextField from 'material-ui/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
-import { Paper } from '../../common';
+import { Paper, Input } from '../../common';
+import { validate } from '../../../helpers';
 import { showSnack } from '../../app/state';
 import { login, signup } from '../state';
 import styles from './styles.css';
 
 class Auth extends React.Component {
   state = {
+    errors: {},
     name: '',
     email: '',
     password: '',
@@ -50,33 +52,71 @@ class Auth extends React.Component {
     });
   }
 
+  handleChangeInput = (name, value) => {
+    this.setState({
+      [name]: value,
+    });
+  }
+
+  setErrors = (errors) => {
+    this.setState({ errors });
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
 
-    switch (this.state.view) {
-      case 'login': {
-        const props = {
-          email: this.state.email,
-          password: this.state.password,
-        };
+    const rules = {
+      password: 'required',
+      email: 'required|email',
+    };
 
-        return this.props.login(props, {
-          error: 'Email or password is not correct!'
-        });
-      }
-
-      case 'signup': {
-        const props = {
-          name: this.state.name,
-          email: this.state.email,
-          password: this.state.password,
-        };
-
-        return this.props.signup(props, {
-          error: 'Email or password is not correct!'
-        });
-      }
+    if(this.state.view === 'login') {
+      return this.handleSignin(this.state, rules);
     }
+    
+    this.handleSignup(this.state, rules);
+  }
+
+  handleSignin = (data, rules) => {
+    const props = {
+      email: data.email,
+      password: data.password,
+    };
+
+    const validator = validate(props, rules);
+
+    if (validator.fails()) {
+      return this.setErrors(validator.errors);
+    }
+
+    this.setErrors({});
+
+    return this.props.login(props, {
+      error: 'Email or password is not correct'
+    });
+  }
+
+  handleSignup = (data, rules) => {
+    const props = {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+    };
+
+    const validator = validate(props, {
+      name: 'required|min:3',
+      ...rules
+    });
+
+    if (validator.fails()) {
+      return this.setErrors(validator.errors);
+    }
+
+    this.setErrors({});
+
+    return this.props.signup(props, {
+      error: 'Please try with different email'
+    });
   }
 
   render = () => (
@@ -89,34 +129,33 @@ class Auth extends React.Component {
       </Typography>
 
       <form autoComplete="off" className={styles.form} onSubmit={this.handleSubmit}>
-        {this.show('name') && <TextField
+        <Input
+          id="name"
           label="Name"
-          className={styles.textField}
+          show={this.show('name')}
           value={this.state.name}
-          onChange={this.handleChange('name')}
-          type="text"
-          margin="normal"
-        />}
+          errors={this.state.errors}
+          onChange={this.handleChangeInput}
+        />
 
-        {this.show('email') && <TextField
+        <Input
           id="email"
           label="Email"
-          className={styles.textField}
+          show={this.show('email')}
           value={this.state.email}
-          onChange={this.handleChange('email')}
-          type="email"
-          margin="normal"
-        />}
+          errors={this.state.errors}
+          onChange={this.handleChangeInput}
+        />
 
-        {this.show('password') && <TextField
+        <Input
           id="password"
           label="Password"
-          className={styles.textField}
-          value={this.state.password}
-          onChange={this.handleChange('password')}
           type="password"
-          margin="normal"
-        />}
+          show={this.show('password')}
+          value={this.state.password}
+          errors={this.state.errors}
+          onChange={this.handleChangeInput}
+        />
 
         <Button raised color="primary" className={styles.button} type="submit">
           Submit

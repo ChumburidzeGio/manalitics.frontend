@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { sessionService } from 'redux-react-session';
+import Validator from 'validatorjs';
 
 export const getRandomInt = (min, max) => {
   min = Math.ceil(min);
@@ -81,9 +83,11 @@ export const isEnv = (check) => env('ENV', check);
 
 export const api_url = (path, queryParams) => buildUrl(env('API_BASE_URL'), { path, queryParams });
 
-export const client = () => {
-  const token = localStorage.getItem('access_token');
-  const header = token ? `Bearer ${token}` : false;
+export function client() {
+
+  const session = JSON.parse(localStorage.getItem('redux-react-session/USER-SESSION'));
+
+  const header = session ? `Bearer ${session.token}` : null;
 
   return axios.create({
     baseURL: api_url(),
@@ -92,4 +96,14 @@ export const client = () => {
       Authorization: header,
     },
   });
+}
+
+export function validate(data, rules, names) {
+  let validator = new Validator(data, rules);
+
+  if(names) {
+    validator.setAttributeNames(names);
+  }
+  
+  return validator;
 }
