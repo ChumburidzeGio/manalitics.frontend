@@ -5,10 +5,20 @@ import classnames from 'classnames';
 
 export default class Input extends Component {
     render() {
-        const { id, onChange, errors, show, type, margin, className, ...others } = this.props;
-        const hasErrors = errors.get && errors.get(id).length > 0;
+        const { 
+            id,
+            onChange,
+            errors,
+            show = true,
+            type,
+            margin,
+            className,
+            ...others
+        } = this.props;
+
+        const hasErrors = errors && errors.get && errors.get(id).length > 0;
         const helperText = hasErrors ? errors.first(id) : '';
-        
+
         return show && (
             <TextField
                 autoComplete={id}

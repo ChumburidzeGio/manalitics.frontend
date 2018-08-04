@@ -45,13 +45,7 @@ class Auth extends React.Component {
 
   setView = (view) => this.setState({ view });
 
-  handleChange = name => (event) => {
-    this.setState({
-      [name]: event.target.value,
-    });
-  }
-
-  handleChangeInput = (name, value) => {
+  handleChange = (name, value) => {
     this.setState({
       [name]: value,
     });
@@ -134,7 +128,7 @@ class Auth extends React.Component {
           show={this.show('name')}
           value={this.state.name}
           errors={this.state.errors}
-          onChange={this.handleChangeInput}
+          onChange={this.handleChange}
         />
 
         <Input
@@ -143,7 +137,7 @@ class Auth extends React.Component {
           show={this.show('email')}
           value={this.state.email}
           errors={this.state.errors}
-          onChange={this.handleChangeInput}
+          onChange={this.handleChange}
         />
 
         <Input
@@ -153,7 +147,7 @@ class Auth extends React.Component {
           show={this.show('password')}
           value={this.state.password}
           errors={this.state.errors}
-          onChange={this.handleChangeInput}
+          onChange={this.handleChange}
         />
 
         <Button raised color="primary" className={styles.button} type="submit">

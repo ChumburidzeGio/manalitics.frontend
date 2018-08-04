@@ -2,9 +2,8 @@ import React, { Fragment } from 'react';
 import { sessionService } from 'redux-react-session';
 import { ListItem, ListItemText } from 'material-ui/List';
 import { connect } from 'react-redux';
-import TextField from 'material-ui/TextField';
-import { Dialog } from '../../common';
-import styles from './styles.css';
+import { Dialog, Input } from '../../common';
+import { validate } from '../../../helpers';
 import { showSnack } from '../../app/state';
 import { update } from '../state';
 
@@ -12,21 +11,36 @@ class UpdateName extends React.Component {
   state = {
     modalOpen: false,
     name: '',
+    errors: {},
   };
 
   componentDidMount = () => {
     sessionService.loadUser().then(({ name }) => this.setState({ name }));
   }
-
-  handleChange = name => (event) => {
+  
+  handleChange = (name, value) => {
     this.setState({
-      [name]: event.target.value,
+      [name]: value,
     });
+  }
+
+  setErrors = (errors) => {
+    this.setState({ errors });
   }
 
   handleSubmit = () => {
     const { name } = this.state;
 
+    const validator = validate({ name }, {
+      name: 'required|string',
+    });
+
+    if (validator.fails()) {
+      return this.setErrors(validator.errors);
+    }
+
+    this.setErrors({});
+    
     this.props.update({ name }).then(() => {
       this.modalToggle();
     }).catch(() => {
@@ -51,14 +65,13 @@ class UpdateName extends React.Component {
           buttonText="Update"
           onSubmit={this.handleSubmit}
         >
-          <TextField
+          <Input
+            id="name"
             label="Name"
             autoFocus
-            className={styles.textField}
             value={this.state.name}
-            onChange={this.handleChange('name')}
-            type="text"
-            margin="normal"
+            errors={this.state.errors}
+            onChange={this.handleChange}
           />
         </Dialog>
       </Fragment>

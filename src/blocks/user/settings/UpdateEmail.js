@@ -1,31 +1,45 @@
 import React, { Fragment } from 'react';
 import { sessionService } from 'redux-react-session';
 import { ListItem, ListItemText } from 'material-ui/List';
-import TextField from 'material-ui/TextField';
 import { connect } from 'react-redux';
-import { Dialog } from '../../common';
+import { Dialog, Input } from '../../common';
+import { validate } from '../../../helpers';
 import { showSnack } from '../../app/state';
-import styles from './styles.css';
 import { update } from '../state';
 
 class UpdateEmail extends React.Component {
   state = {
     modalOpen: false,
     email: '',
+    errors: {},
   };
 
   componentDidMount = () => {
     sessionService.loadUser().then(({ email }) => this.setState({ email }));
   }
 
-  handleChange = name => (event) => {
+  handleChange = (name, value) => {
     this.setState({
-      [name]: event.target.value,
+      [name]: value,
     });
+  }
+
+  setErrors = (errors) => {
+    this.setState({ errors });
   }
 
   handleSubmit = () => {
     const { email } = this.state;
+
+    const validator = validate({ email }, {
+      email: 'required|email',
+    });
+
+    if (validator.fails()) {
+      return this.setErrors(validator.errors);
+    }
+
+    this.setErrors({});
 
     this.props.update({ email }).then(() => {
       this.modalToggle();
@@ -51,14 +65,14 @@ class UpdateEmail extends React.Component {
           buttonText="Update"
           onSubmit={this.handleSubmit}
         >
-          <TextField
+          <Input
+            id="email"
             label="Email"
             autoFocus
-            className={styles.textField}
             value={this.state.email}
-            onChange={this.handleChange('email')}
-            type="text"
-            margin="normal"
+            errors={this.state.errors}
+            onChange={this.handleChange}
+            type="email"
           />
         </Dialog>
       </Fragment>

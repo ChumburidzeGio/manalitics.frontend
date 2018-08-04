@@ -10,7 +10,7 @@ import * as transactionsApi from '../../transactions/api';
 class UpdateCurrency extends React.Component {
     state = {
         modalOpen: false,
-        currency: 'EUR'
+        currency: 'EUR',
     };
 
     componentDidMount = () => {

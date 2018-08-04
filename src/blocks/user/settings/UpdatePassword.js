@@ -1,9 +1,8 @@
 import React, { Fragment } from 'react';
 import { ListItem, ListItemText } from 'material-ui/List';
 import { connect } from 'react-redux';
-import TextField from 'material-ui/TextField';
-import { Dialog } from '../../common';
-import styles from './styles.css';
+import { Dialog, Input } from '../../common';
+import { validate } from '../../../helpers';
 import { showSnack } from '../../app/state';
 import * as authApi from '../api';
 
@@ -12,16 +11,32 @@ class UpdatePassword extends React.Component {
     modalOpen: false,
     curentPassword: '',
     newPassword: '',
+    errors: {},
   };
 
-  handleChange = name => (event) => {
+  handleChange = (name, value) => {
     this.setState({
-      [name]: event.target.value,
+      [name]: value,
     });
+  }
+
+  setErrors = (errors) => {
+    this.setState({ errors });
   }
 
   handleSubmit = () => {
     const { curentPassword, newPassword } = this.state;
+
+    const validator = validate({ name }, {
+      curentPassword: 'required|string',
+      newPassword: 'required|string',
+    });
+
+    if (validator.fails()) {
+      return this.setErrors(validator.errors);
+    }
+
+    this.setErrors({});
 
     authApi.update({
       curentPassword, newPassword
@@ -50,23 +65,23 @@ class UpdatePassword extends React.Component {
           buttonText="Update"
           onSubmit={this.handleSubmit}
         >
-          <TextField
+          <Input
+            id="newPassword"
             label="New password"
             autoFocus
-            className={styles.textField}
             value={this.state.newPassword}
-            onChange={this.handleChange('newPassword')}
+            errors={this.state.errors}
+            onChange={this.handleChange}
             type="password"
-            margin="normal"
           />
-          <TextField
+          <Input
+            id="curentPassword"
             label="Current password"
             autoFocus
-            className={styles.textField}
             value={this.state.curentPassword}
-            onChange={this.handleChange('curentPassword')}
+            errors={this.state.errors}
+            onChange={this.handleChange}
             type="password"
-            margin="normal"
           />
         </Dialog>
       </Fragment>
