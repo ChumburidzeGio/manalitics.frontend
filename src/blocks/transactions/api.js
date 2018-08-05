@@ -14,7 +14,7 @@ export const load = ({ page, query }) => {
     return new Promise((resolve, reject) => setTimeout(reject, 1000));
 }
 
-export const importFromFile = ({ file, bank }) => {
+export const importFromFile = (file, bank) => {
     if (isEnv('development')) {
 
         const formData = new FormData();
@@ -40,7 +40,7 @@ export const importFromFile = ({ file, bank }) => {
 
 export const find = (id) => {
     if (isEnv('development')) {
-        return client().get('transaction.details?id=' + id);
+        return client().get('transactions.find?id=' + id);
     }
 
     if (getRandBool()) {

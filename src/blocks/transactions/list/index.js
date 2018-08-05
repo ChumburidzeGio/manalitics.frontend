@@ -20,8 +20,8 @@ const humanizeDate = (date) => {
         nextDay: '[Tomorrow]',
         nextWeek: 'dddd',
         lastDay: '[Yesterday]',
-        lastWeek: '[Last] dddd',
-        sameElse: 'DD/MM/YYYY'
+        lastWeek: 'Do MMM',
+        sameElse: 'Do MMM, YYYY'
     });
 }
 
@@ -37,7 +37,7 @@ const columns = [
         id: 'title', label: 'Title', render: (item) => (
             <Fragment>
                 <span className={styles.title}>{item.title}</span>
-                <span className={styles.account}>{item.account}</span>
+                {/* <span className={styles.account}>{item.account}</span> */}
             </Fragment>
         )
     },
@@ -45,7 +45,7 @@ const columns = [
     {
         id: 'amount', label: 'Amount', padding: "none", render: (item) => (
             <Fragment>
-                <span className={styles.amount}>{item.amount_formated}</span>
+                <span className={styles.amount}>{item.amount}</span>
                 <span className={styles.currency}>{item.currency}</span>
             </Fragment>
         )

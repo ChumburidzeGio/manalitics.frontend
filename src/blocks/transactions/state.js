@@ -81,8 +81,7 @@ export const selectTransactionsAll = (checked) => ({
 export const loadTransactionsSuccess = (transactions, query) => ({
   type: actionTypes.LOAD_TRANSACTIONS_SUCCESS,
   payload: {
-    items: transactions.data.data,
-    hasNext: transactions.data.next_page_url,
+    items: transactions.data,
   },
   query,
 });
@@ -124,7 +123,7 @@ export default (state = initialState, { type, payload, query } = {}) => {
         : state.items.concat(payload.items)
       );
       
-      nextPageId = payload.hasNext ? state.nextPageId + 1 : null;
+      nextPageId = state.nextPageId + 1;
 
       return Object.assign({}, state, { items, nextPageId, query  });
     }
