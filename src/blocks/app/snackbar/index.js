@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SnackbarContent from 'material-ui/Snackbar';
-import Button from 'material-ui/Button';
+import SnackbarContent from '@material-ui/core/Snackbar';
+import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import { CircularProgress } from 'material-ui/Progress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { hideSnack } from '../state';
 import styles from './styles.css';
 

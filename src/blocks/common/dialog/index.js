@@ -1,11 +1,11 @@
 import React from 'react';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import Dialog, {
     DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
-} from 'material-ui/Dialog';
+} from '@material-ui/core/Dialog';
 import styles from './styles.css';
 
 const XDialog = ({ title, desctiption, onClose, onSubmit, buttonText, open, children }) => (

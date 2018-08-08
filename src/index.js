@@ -9,8 +9,11 @@ import { createStore, applyMiddleware } from 'redux';
 import { sessionService } from 'redux-react-session';
 import thunk from 'redux-thunk';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import { MuiThemeProvider as MTP, createMuiTheme as cmt } from '@material-ui/core/styles';
 import blue from 'material-ui/colors/blue';
+import blue2 from '@material-ui/core/colors/blue';
 import green from 'material-ui/colors/green';
+import green2 from '@material-ui/core/colors/green';
 import rootReducer from './blocks/state';
 import routes from './views/routes';
 
@@ -31,16 +34,25 @@ const theme = createMuiTheme({
   },
 });
 
+const theme2 = cmt({
+  palette: {
+    primary: blue2,
+    secondary: green2,
+  },
+});
+
 const history = syncHistoryWithStore(browserHistory, store);
 
 const App = CreateReactClass({
   render() {
     return (
-        <Provider store={store}>
+      <Provider store={store}>
+        <MTP theme={theme2}>
           <MuiThemeProvider theme={theme}>
             <Router history={history}>{routes}</Router>
           </MuiThemeProvider>
-        </Provider> 
+        </MTP>
+      </Provider>
     );
   },
 });

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Zoom } from 'material-ui/transitions';
+import Zoom from '@material-ui/core/Zoom';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import styles from './styles.css';
 import classNames from 'classnames';
 
