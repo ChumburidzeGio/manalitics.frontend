@@ -1,6 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import { Paper, Input } from '../../common';
 import { validate } from '../../../helpers';

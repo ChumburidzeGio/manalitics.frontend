@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Input from 'material-ui/Input';
-import { FormControl } from 'material-ui/Form';
+import Input from '@material-ui/core/Input';
+import FormControl from '@material-ui/core/FormControl';
 import { loadTransactions } from '../state';
 import styles from './styles.css';
 

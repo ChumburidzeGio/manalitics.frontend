@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import { ListItem, ListItemText } from 'material-ui/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import { connect } from 'react-redux';
 import { Dialog, Input } from '../../common';
 import { validate } from '../../../helpers';
@@ -80,7 +81,6 @@ class UpdatePassword extends React.Component {
           <Input
             id="curentPassword"
             label="Current password"
-            autoFocus
             value={this.state.curentPassword}
             errors={this.state.errors}
             onChange={this.handleChange}

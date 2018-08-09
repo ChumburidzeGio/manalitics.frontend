@@ -47,11 +47,11 @@ const App = CreateReactClass({
   render() {
     return (
       <Provider store={store}>
-        <MTP theme={theme2}>
           <MuiThemeProvider theme={theme}>
+        <MTP theme={theme2}>
             <Router history={history}>{routes}</Router>
-          </MuiThemeProvider>
         </MTP>
+          </MuiThemeProvider>
       </Provider>
     );
   },

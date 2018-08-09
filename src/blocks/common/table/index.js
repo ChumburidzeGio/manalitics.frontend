@@ -1,13 +1,17 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { default as MuiToolbar } from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
-import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
+import { default as MuiToolbar } from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { default as MuiTable, TableHead, TableBody, TableCell, TableRow } from 'material-ui/Table';
+import { default as MuiTable } from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 import classNames from 'classnames';
-import Checkbox from 'material-ui/Checkbox';
+import Checkbox from '@material-ui/core/Checkbox';
 import styles from './styles.css';
 
 export const Toolbar = ({ selected, title, onDeleteSelected }) => {

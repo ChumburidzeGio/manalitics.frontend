@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { sessionService } from 'redux-react-session';
-import { ListItem, ListItemText } from 'material-ui/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import { connect } from 'react-redux';
 import { showSnack } from '../../app/state';
 import { update } from '../state';

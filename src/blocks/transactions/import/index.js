@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import CloudUpload from '@material-ui/icons/CloudUpload';
-import { ListItem, ListItemText } from 'material-ui/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import { Select, Dialog, FileInput } from '../../common';
 import { loadTransactions } from '../state';
 import { importFromFile } from '../api';

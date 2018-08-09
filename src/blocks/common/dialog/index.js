@@ -1,11 +1,10 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import Dialog, {
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-} from '@material-ui/core/Dialog';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import styles from './styles.css';
 
 const XDialog = ({ title, desctiption, onClose, onSubmit, buttonText, open, children }) => (
@@ -28,7 +27,7 @@ const XDialog = ({ title, desctiption, onClose, onSubmit, buttonText, open, chil
 
         <DialogActions>
             <Button onClick={onClose}>Cancel</Button>
-            <Button onClick={onSubmit} color="primary" autoFocus>{buttonText}</Button>
+            <Button onClick={onSubmit} color="primary">{buttonText}</Button>
         </DialogActions>
     </Dialog>
 );

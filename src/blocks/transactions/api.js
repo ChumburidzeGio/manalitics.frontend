@@ -3,7 +3,7 @@ import * as factories from '../../factories';
 
 export const load = ({ page, query }) => {
     if (isEnv('development')) {
-        return client().get(`/transactions?page=${page}&query=${query}`);
+        return client().get(`/transactions.all?page=${page}&query=${query}`);
     }
 
     if (page < 4) {

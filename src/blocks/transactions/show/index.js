@@ -1,7 +1,10 @@
 import React from 'react';
-import List, { ListItem, ListItemText, ListItemIcon } from 'material-ui/List';
-import Avatar from 'material-ui/Avatar';
-import Drawer from 'material-ui/Drawer';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import Drawer from '@material-ui/core/Drawer';
 import CategoryIcon from '@material-ui/icons/Category';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import NotesIcon from '@material-ui/icons/Notes';

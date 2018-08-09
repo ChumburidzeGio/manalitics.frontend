@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Switch as MuiSwitch } from 'material-ui';
-import { FormControlLabel, FormGroup } from 'material-ui/Form';
+import { default as MuiSwitch } from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
 
 class Switch extends React.Component {
   constructor(props) {
